@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Diploma.Data.DAL.Repository
 {
-	public interface IRepository<TEntity> : IDisposable 
+	public interface IRepository<TEntity>
 		where TEntity : class, IEntity, new()
 	{
 		public Task<TEntity> GetAsync(Guid id, bool disableTracking = false);
@@ -12,6 +12,5 @@ namespace Diploma.Data.DAL.Repository
 		public void Update(TEntity entity);
 		public void Remove(TEntity entity);
 		public void Remove(Guid id);
-		public Task SaveChangesAsync();
 	}
 }

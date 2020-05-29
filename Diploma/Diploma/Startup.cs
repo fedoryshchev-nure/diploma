@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Diploma.Data.DAL;
+using Diploma.Data.DAL.UnitOfWork;
+using Diploma.Data.DAL.UnitOfWork.Repositories.Implemetantions;
+using Diploma.Data.DAL.UnitOfWork.Repositories.Interfaces;
 using Diploma.Data.Entities.Main.User;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +39,11 @@ namespace Diploma
 
 			services.AddIdentityCore<User>()
 				.AddEntityFrameworkStores<ApplicationDbContext>();
+
+			services.AddScoped<IUserRepository, UserRepository>();
+			services.AddScoped<ICourseRepository, CourseRepository>();
+			services.AddScoped<ILessonRepository, LessonRepository>();
+			services.AddScoped<IUnitOfWork, UnitOfWork>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

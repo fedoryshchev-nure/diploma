@@ -49,15 +49,5 @@ namespace Diploma.Data.DAL.Repository
 		{
 			DbContext.Remove(entity);
 		}
-
-		public async Task SaveChangesAsync()
-		{
-			await DbContext.SaveChangesAsync();
-		}
-
-		public void Dispose()
-		{
-			DbContext.Dispose();
-		}
 	}
 }

@@ -9,16 +9,16 @@ namespace Diploma.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]
-	public class WeatherForecastController : ControllerBase
+	public class BaseController : ControllerBase
 	{
 		private static readonly string[] Summaries = new[]
 		{
 			"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 		};
 
-		private readonly ILogger<WeatherForecastController> _logger;
+		private readonly ILogger<BaseController> _logger;
 
-		public WeatherForecastController(ILogger<WeatherForecastController> logger)
+		public BaseController(ILogger<BaseController> logger)
 		{
 			_logger = logger;
 		}
