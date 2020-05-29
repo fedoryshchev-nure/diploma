@@ -46,6 +46,8 @@ namespace Diploma
 				app.UseDeveloperExceptionPage();
 			}
 
+			app.UseStaticFiles();
+
 			app.UseHttpsRedirection();
 
 			app.UseRouting();
