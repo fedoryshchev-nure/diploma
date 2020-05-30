@@ -11,19 +11,19 @@ namespace Diploma.Data.DAL.UnitOfWork
 {
 	public class UnitOfWork : IUnitOfWork
 	{
-		#region Repositories
+		#region Repository Getters
 
 		public IUserRepository UserRepository
 		{
-			get => Repositories[typeof(User)] as IUserRepository;
+			get => repositories[typeof(User)] as IUserRepository;
 		}
 		public ICourseRepository CourseRepository
 		{
-			get => Repositories[typeof(Course)] as ICourseRepository;
+			get => repositories[typeof(Course)] as ICourseRepository;
 		}
 		public ILessonRepository LessonRepository
 		{
-			get => Repositories[typeof(Lesson)] as ILessonRepository;
+			get => repositories[typeof(Lesson)] as ILessonRepository;
 		}
 
 		#endregion
@@ -31,7 +31,7 @@ namespace Diploma.Data.DAL.UnitOfWork
 		protected ApplicationDbContext DbContext { get; }
 
 		// Object as generics wont let you do it otherwise
-		private IReadOnlyDictionary<Type, object> Repositories { get; }
+		private readonly IReadOnlyDictionary<Type, object> repositories;
 
 		public UnitOfWork(ApplicationDbContext dbContext,
 			IUserRepository userRepository,
@@ -40,7 +40,7 @@ namespace Diploma.Data.DAL.UnitOfWork
 		{
 			DbContext = dbContext;
 
-			Repositories = new Dictionary<Type, object>
+			repositories = new Dictionary<Type, object>
 			{
 				{ typeof(User), userRepository },
 				{ typeof(Course), courseRepository },
@@ -50,12 +50,12 @@ namespace Diploma.Data.DAL.UnitOfWork
 
 		IRepository<TEntity> IUnitOfWork.GetRepository<TEntity, TRepository>()
 		{
-			return (TRepository)Repositories[typeof(TEntity)];
+			return (TRepository)repositories[typeof(TEntity)];
 		}
 
 		IRepository<TEntity> IUnitOfWork.GetRepository<TEntity>()
 		{
-			return (IRepository<TEntity>)Repositories[typeof(TEntity)];
+			return (IRepository<TEntity>)repositories[typeof(TEntity)];
 		}
 
 		IQueryable<TEntity> IUnitOfWork.Query<TEntity>()

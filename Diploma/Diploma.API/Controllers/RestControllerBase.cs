@@ -15,16 +15,16 @@ namespace Diploma.Controllers
 	public abstract class RestControllerBase<TDto, TEntity> : ControllerBase
 		where TEntity : class, IEntity, new()
 	{
-		protected IUnitOfWork UnitOfWork { get; }
+		protected readonly IUnitOfWork unitOfWork;
 
-		protected IMapper Mapper { get; }
+		protected readonly IMapper mapper;
 
 		public RestControllerBase(IUnitOfWork unitOfWork,
 			IMapper mapper)
 		{
-			UnitOfWork = unitOfWork;
+			this.unitOfWork = unitOfWork;
 
-			Mapper = mapper;
+			this.mapper = mapper;
 		}
 
 		[HttpGet]
@@ -34,9 +34,9 @@ namespace Diploma.Controllers
 		{
 			try
 			{
-				var entities = await UnitOfWork.GetRepository<TEntity>()
+				var entities = await unitOfWork.GetRepository<TEntity>()
 					.GetAsync(page, pageSize, disableTracking: true);
-				var dtos = Mapper.Map<IEnumerable<TDto>>(entities);
+				var dtos = mapper.Map<IEnumerable<TDto>>(entities);
 				return Ok(dtos);
 			}
 			catch (Exception ex)
@@ -50,9 +50,9 @@ namespace Diploma.Controllers
 		{
 			try
 			{
-				var entity = await UnitOfWork.GetRepository<TEntity>()
+				var entity = await unitOfWork.GetRepository<TEntity>()
 					.GetAsync(id, true);
-				var dto = Mapper.Map<TDto>(entity);
+				var dto = mapper.Map<TDto>(entity);
 				return Ok(dto);
 			}
 			catch (Exception ex)
@@ -66,11 +66,11 @@ namespace Diploma.Controllers
 		{
 			try
 			{
-				var entity = Mapper.Map<TEntity>(dto);
-				await UnitOfWork.GetRepository<TEntity>()
+				var entity = mapper.Map<TEntity>(dto);
+				await unitOfWork.GetRepository<TEntity>()
 					.CreateAsync(entity);
-				var adedDto = Mapper.Map<TDto>(entity);
-				return Ok(adedDto);
+				var adedDto = mapper.Map<TDto>(entity);
+				return Created(Request.Path, adedDto);
 			}
 			catch (Exception ex)
 			{
@@ -79,15 +79,20 @@ namespace Diploma.Controllers
 		}
 
 		[HttpPut("{id}")]
-		public ActionResult<TDto> Update(Guid id, TDto dto)
+		public async Task<ActionResult<TDto>> Update(Guid id, TDto dto)
 		{
 			try
 			{
-				var entity = Mapper.Map<TEntity>(dto);
+				var existingEntity = await unitOfWork.GetRepository<TEntity>()
+					.GetAsync(id, true);
+				if (existingEntity == null) return NotFound();
+
+				var entity = mapper.Map<TEntity>(dto);
 				entity.Id = id;
-				UnitOfWork.GetRepository<TEntity>()
+
+				unitOfWork.GetRepository<TEntity>()
 					.Update(entity);
-				var updateDto = Mapper.Map<TDto>(entity);
+				var updateDto = mapper.Map<TDto>(entity);
 				return Ok(updateDto);
 			}
 			catch (Exception ex)
@@ -101,7 +106,7 @@ namespace Diploma.Controllers
 		{
 			try
 			{
-				UnitOfWork.GetRepository<TEntity>()
+				unitOfWork.GetRepository<TEntity>()
 					.Delete(id);
 				return NoContent();
 			}
