@@ -13,6 +13,8 @@ namespace Diploma.Data.DAL.UnitOfWork
 		public ICourseRepository CourseRepository { get; }
 		public ILessonRepository LessonRepository { get; }
 
+		public IRepository<TEntity> GetRepository<TEntity>()
+			where TEntity : class, IEntity, new();
 		public IRepository<TEntity> GetRepository<TEntity, TRepository>()
 			where TEntity : class, IEntity, new()
 			where TRepository : IRepository<TEntity>;

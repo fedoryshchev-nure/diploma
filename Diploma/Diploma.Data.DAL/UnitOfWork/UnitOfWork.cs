@@ -53,6 +53,11 @@ namespace Diploma.Data.DAL.UnitOfWork
 			return (TRepository)Repositories[typeof(TEntity)];
 		}
 
+		IRepository<TEntity> IUnitOfWork.GetRepository<TEntity>()
+		{
+			return (IRepository<TEntity>)Repositories[typeof(TEntity)];
+		}
+
 		IQueryable<TEntity> IUnitOfWork.Query<TEntity>()
 		{
 			return DbContext.Set<TEntity>()

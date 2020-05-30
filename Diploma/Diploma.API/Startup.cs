@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Diploma.Common.Mappings;
 using Diploma.Data.DAL;
 using Diploma.Data.DAL.UnitOfWork;
 using Diploma.Data.DAL.UnitOfWork.Repositories.Implemetantions;
@@ -44,6 +46,13 @@ namespace Diploma
 			services.AddScoped<ICourseRepository, CourseRepository>();
 			services.AddScoped<ILessonRepository, LessonRepository>();
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+			var mappingConfig = new MapperConfiguration(mc =>
+			{
+				mc.AddProfile(new MappingProfile());
+			});
+			IMapper mapper = mappingConfig.CreateMapper();
+			services.AddSingleton(mapper);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
