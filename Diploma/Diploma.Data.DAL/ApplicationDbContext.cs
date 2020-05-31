@@ -1,4 +1,5 @@
-﻿using Diploma.Data.Entities.Linking;
+﻿using Diploma.Data.DAL.Seeders;
+using Diploma.Data.Entities.Linking;
 using Diploma.Data.Entities.Main.Course;
 using Diploma.Data.Entities.Main.User;
 using Microsoft.AspNetCore.Identity;
@@ -33,6 +34,15 @@ namespace Diploma.Data.DAL
 			builder.Entity<UserLesson>()
 				.Property(s => s.TimeSpent)
 				.HasConversion(new TimeSpanToTicksConverter());
+
+			Seed(builder);
+		}
+
+		private void Seed(ModelBuilder builder)
+		{
+			RoleSeeder.Seed(builder);
+			//SeedUsers(builder); // Users are seeded in startup as userManager needed
+			CourseSeeder.Seed(builder);
 		}
 	}
 }

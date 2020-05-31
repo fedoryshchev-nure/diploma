@@ -9,6 +9,7 @@ using Diploma.API.Services.Interfaces;
 using Diploma.Common.Mappings;
 using Diploma.Common.Settings;
 using Diploma.Data.DAL;
+using Diploma.Data.DAL.Seeders;
 using Diploma.Data.DAL.UnitOfWork;
 using Diploma.Data.DAL.UnitOfWork.Repositories.Implemetantions;
 using Diploma.Data.DAL.UnitOfWork.Repositories.Interfaces;
@@ -17,6 +18,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -71,6 +73,7 @@ namespace Diploma
 				opts.Password.RequireNonAlphanumeric = false;
 				opts.Password.RequiredLength = 6;
 			})
+				.AddRoles<IdentityRole<Guid>>()
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 
 			services.AddScoped<IUserRepository, UserRepository>();
@@ -125,7 +128,7 @@ namespace Diploma
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<User> userManager)
 		{
 			if (env.IsDevelopment())
 			{
@@ -144,6 +147,8 @@ namespace Diploma
 			{
 				endpoints.MapControllers();
 			});
+
+			UserSeeder.SeedAsync(userManager).Wait();
 		}
 	}
 }
