@@ -13,6 +13,7 @@ namespace Diploma.Common.DTOs
 		public string Title { get; set; }
 		[MaxLength(300)]
 		public string Description { get; set; }
+		public string ImageName { get; set; }
 
 		public IEnumerable<LessonDto> Lessons { get; set; }
 	}
