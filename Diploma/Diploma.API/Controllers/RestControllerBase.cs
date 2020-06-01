@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Diploma.Data.DAL.UnitOfWork;
 using Diploma.Data.Entities.Main;
+using Diploma.Data.Entities.Main.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Diploma.Controllers
+namespace Diploma.API.Controllers
 {
 	[Authorize(Roles = "God")] // No one can access that controller unless rights are specified
 	[ApiController]
@@ -15,6 +17,9 @@ namespace Diploma.Controllers
 	public abstract class RestControllerBase<TDto, TEntity> : ControllerBase
 		where TEntity : class, IEntity, new()
 	{
+		protected virtual User CurrentUser { get => lazyCurrentUserAsync.Value.Result; }
+		private readonly Lazy<Task<User>> lazyCurrentUserAsync;
+
 		protected readonly IUnitOfWork unitOfWork;
 
 		protected readonly IMapper mapper;
@@ -22,6 +27,7 @@ namespace Diploma.Controllers
 		public RestControllerBase(IUnitOfWork unitOfWork,
 			IMapper mapper)
 		{
+			this.lazyCurrentUserAsync = new Lazy<Task<User>>(GetCurrentUserAsync);
 			this.unitOfWork = unitOfWork;
 
 			this.mapper = mapper;
@@ -114,6 +120,19 @@ namespace Diploma.Controllers
 			{
 				return BadRequest(ex);
 			}
+		}
+
+		private async Task<User> GetCurrentUserAsync()
+		{
+			if (this.User == null
+				|| this.User.Identity == null
+				|| !this.User.Identity.IsAuthenticated) return null;
+
+			var email = User.FindFirst(ClaimTypes.Email).Value;
+			var user = await unitOfWork.UserRepository
+				.GetAsync(email);
+
+			return user;
 		}
 	}
 }
