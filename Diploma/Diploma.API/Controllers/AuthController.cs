@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Diploma.API.Controllers
 {
+	[ApiController]
 	[Route("api/[controller]/[action]")]
 	public class AuthController : ControllerBase
 	{
@@ -33,7 +34,7 @@ namespace Diploma.API.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<UserDto>> Register(LoginDto dto)
+		public async Task<ActionResult<UserDto>> Login(LoginDto dto)
 		{
 			try
 			{

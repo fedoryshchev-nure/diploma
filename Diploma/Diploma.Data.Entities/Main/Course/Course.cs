@@ -6,6 +6,12 @@ namespace Diploma.Data.Entities.Main.Course
 {
 	public class Course : EntityBase
 	{
+		public Course()
+		{
+			UserCourses = new List<UserCourse>();
+			CourseLessons = new List<CourseLesson>();
+		}
+
 		[Required]
 		[MaxLength(128)]
 		public string Title { get; set; }

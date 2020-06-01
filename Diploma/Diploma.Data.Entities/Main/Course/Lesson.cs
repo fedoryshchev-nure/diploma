@@ -6,6 +6,12 @@ namespace Diploma.Data.Entities.Main.Course
 {
 	public class Lesson : EntityBase
 	{
+		public Lesson()
+		{
+			UserLessons = new List<UserLesson>();
+			CourseLessons = new List<CourseLesson>();
+		}
+
 		[Required]
 		public int? Order { get; set; }
 

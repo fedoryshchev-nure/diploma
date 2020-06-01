@@ -41,7 +41,13 @@ namespace Diploma
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddCors();
+			services.AddCors(options =>
+			{
+				options.AddPolicy("EnableCORS", builder =>
+				{
+					builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().Build();
+				});
+			});
 			services.AddControllers();
 
 			#region Settings
@@ -51,6 +57,8 @@ namespace Diploma
 			var securityKey = new SymmetricSecurityKey(key);
 			services.Configure<AuthOptions>(options =>
 			{
+				options.Secret = authOptionsSection[nameof(AuthOptions.Secret)];
+				options.ExpiresInMinutes = int.Parse(authOptionsSection[nameof(AuthOptions.ExpiresInMinutes)]);
 				options.Issuer = authOptionsSection[nameof(AuthOptions.Issuer)];
 				options.Audience = authOptionsSection[nameof(AuthOptions.Audience)];
 				options.SigningCredentials = new SigningCredentials(
@@ -72,6 +80,8 @@ namespace Diploma
 				opts.Password.RequireUppercase = false;
 				opts.Password.RequireNonAlphanumeric = false;
 				opts.Password.RequiredLength = 6;
+
+				opts.User.RequireUniqueEmail = true; 
 			})
 				.AddRoles<IdentityRole<Guid>>()
 				.AddEntityFrameworkStores<ApplicationDbContext>();
@@ -130,6 +140,8 @@ namespace Diploma
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<User> userManager)
 		{
+			app.UseCors("EnableCORS");
+
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
@@ -137,7 +149,7 @@ namespace Diploma
 
 			app.UseStaticFiles();
 
-			app.UseHttpsRedirection();
+			//app.UseHttpsRedirection();
 
 			app.UseRouting();
 
