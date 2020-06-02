@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using Diploma.API.Services.Implemetantions;
 using Diploma.API.Services.Interfaces;
@@ -17,9 +14,7 @@ using Diploma.Data.Entities.Main.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -62,18 +57,19 @@ namespace Diploma
 				options.Issuer = authOptionsSection[nameof(AuthOptions.Issuer)];
 				options.Audience = authOptionsSection[nameof(AuthOptions.Audience)];
 				options.SigningCredentials = new SigningCredentials(
-					securityKey, 
+					securityKey,
 					SecurityAlgorithms.HmacSha256);
 			});
 
 			#endregion
 
 			#region Db
-
 			services.AddDbContext<ApplicationDbContext>(options =>
-				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+				options
+					.UseLoggerFactory(LoggerFactory.Create(builder => { builder.AddConsole(); }))
+					.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-			services.AddIdentityCore<User>(opts => 
+			services.AddIdentityCore<User>(opts =>
 			{
 				opts.Password.RequireDigit = false;
 				opts.Password.RequireLowercase = false;
@@ -81,7 +77,7 @@ namespace Diploma
 				opts.Password.RequireNonAlphanumeric = false;
 				opts.Password.RequiredLength = 6;
 
-				opts.User.RequireUniqueEmail = true; 
+				opts.User.RequireUniqueEmail = true;
 			})
 				.AddRoles<IdentityRole<Guid>>()
 				.AddEntityFrameworkStores<ApplicationDbContext>();
@@ -149,7 +145,7 @@ namespace Diploma
 
 			app.UseStaticFiles();
 
-			//app.UseHttpsRedirection();
+			app.UseHttpsRedirection();
 
 			app.UseRouting();
 

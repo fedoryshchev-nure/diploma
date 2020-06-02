@@ -9,6 +9,7 @@ namespace Diploma.Data.DAL.Repository
 	public interface IRepository<TEntity>
 		where TEntity : class, IEntity, new()
 	{
+		public Task<int> CountAsync(Expression<Func<TEntity, bool>> filters = null);
 		public Task<IEnumerable<TEntity>> GetAsync(
 			int page = 0,
 			int? pageSize = 50,

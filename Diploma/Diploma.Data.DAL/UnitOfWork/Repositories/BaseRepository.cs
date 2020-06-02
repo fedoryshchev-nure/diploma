@@ -19,6 +19,21 @@ namespace Diploma.Data.DAL.Repository
 			DbContext = dbContext;
 		}
 
+		public async Task<int> CountAsync(Expression<Func<TEntity, bool>> filters = null)
+		{
+			var query = DbContext.Set<TEntity>()
+				.AsQueryable();
+
+			if (filters != null)
+			{
+				query = query.Where(filters);
+			}
+
+			var count = await query.CountAsync();
+
+			return count;
+		}
+
 		public async Task<IEnumerable<TEntity>> GetAsync(
 			int page = 0, 
 			int? pageSize = 50,

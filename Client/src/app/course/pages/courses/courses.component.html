@@ -1,1 +1,2 @@
-<p>courses works!</p>
+<app-courses-list [courses$]="courses$" [total$]="total$" [pageSize]="filters.getValue().pageSize"
+    (pagingChanged)="updateFilters($event)"></app-courses-list>

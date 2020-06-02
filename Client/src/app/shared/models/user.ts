@@ -1,8 +1,13 @@
+import { Course } from './course/course';
+
 export class User {
-    id: String;
-    email: string;
-    password: string;
-    firstName: string;
-    lastName: string;
-    token?: string;
+    constructor(
+        public id: String,
+        public email: string,
+        public password: string,
+        public firstName: string,
+        public lastName: string,
+        public courses: Course[],
+        public token?: string,
+    ) { }
 }

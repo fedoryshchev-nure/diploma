@@ -1,17 +1,18 @@
 
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { environment } from 'src/environments/environment';
 
 import { User } from 'src/app/shared/models/user';
 import { RegisterModel } from 'src/app/shared/models/auth/register-model';
 import { LoginModel } from 'src/app/shared/models/auth/login-model';
-import { JwtHelperService } from '@auth0/angular-jwt';
 
 const currentUser = "currentUser";
+const roleClaim = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
 
 @Injectable({
   providedIn: 'root'
@@ -53,21 +54,32 @@ export class AuthService {
   }
 
   public login(loginModel: LoginModel): Observable<User> {
-    console.log(loginModel);
     return this.http.post<User>(
       `${environment.apiUrl}/auth/login`,
       loginModel,
     )
       .pipe(map(user => {
-        console.log("pipe")
         localStorage.setItem(currentUser, JSON.stringify(user));
         this.currentUserSubject.next(user);
         return user;
       }));
   }
 
-  logout() {
+  public logout() {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
+  }
+
+  public isAdmin(): boolean {
+    if (this.currentUserValue) {
+      const userRoles = new JwtHelperService()
+        .decodeToken(this.currentUserValue.token)[roleClaim].split(",");
+
+      if (userRoles.includes("Admin")) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

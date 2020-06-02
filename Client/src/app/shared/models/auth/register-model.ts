@@ -1,7 +1,7 @@
 export class RegisterModel {
     constructor(
-        public Email: string,
-        public Password: string,
-        public ConfirmPassword: string,
+        public email: string,
+        public password: string,
+        public confirmPassword: string,
     ) { }
 }
