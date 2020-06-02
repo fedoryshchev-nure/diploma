@@ -25,21 +25,24 @@ namespace Diploma.Data.DAL.Seeders
 					Id = new Guid("00000000-0000-0000-0000-000000000001"),
 					Order = 1,
 					Title = "Lesson 1",
-					Text = "Course 1, Lesson 1"
+					Text = "Course 1, Lesson 1",
+					ImageName = "1.jpg"
 				},
 				new Lesson
 				{
 					Id = new Guid("00000000-0000-0000-0000-000000000002"),
 					Order = 2,
 					Title = "Lesson 2",
-					Text = "Course 1, Lesson 2"
+					Text = "Course 1, Lesson 2",
+					ImageName = "3.png"
 				},
 				new Lesson
 				{
 					Id = new Guid("00000000-0000-0000-0000-000000000003"),
 					Order = 3,
 					Title = "Lesson 3",
-					Text = "Course 1, Lesson 3"
+					Text = "Course 1, Lesson 3",
+					ImageName = "5.jpg"
 				},
 				new Lesson
 				{
@@ -63,7 +66,8 @@ namespace Diploma.Data.DAL.Seeders
 					Id = new Guid("00000000-0000-0000-0000-000000000006"),
 					Order = 1,
 					Title = "Lesson 1",
-					Text = "Course 2, Lesson 1"
+					Text = "Course 2, Lesson 1",
+					ImageName = "2.png"
 				},
 				new Lesson
 				{
@@ -77,7 +81,8 @@ namespace Diploma.Data.DAL.Seeders
 					Id = new Guid("00000000-0000-0000-0000-000000000008"),
 					Order = 3,
 					Title = "Lesson 3",
-					Text = "Course 2, Lesson 3"
+					Text = "Course 2, Lesson 3",
+					ImageName = "4.png"
 				},
 			});
 			builder.Entity<Lesson>().HasData(new List<Lesson>
@@ -87,14 +92,16 @@ namespace Diploma.Data.DAL.Seeders
 					Id = new Guid("00000000-0000-0000-0000-000000000009"),
 					Order = 1,
 					Title = "Lesson 1",
-					Text = "Course 3, Lesson 1"
+					Text = "Course 3, Lesson 1",
+					ImageName = "4.png"
 				},
 				new Lesson
 				{
 					Id = new Guid("00000000-0000-0000-0000-000000000010"),
 					Order = 2,
 					Title = "Lesson 2",
-					Text = "Course 3, Lesson 2"
+					Text = "Course 3, Lesson 2",
+					ImageName = "5.jpg"
 				},
 				new Lesson
 				{
@@ -134,18 +141,21 @@ namespace Diploma.Data.DAL.Seeders
 				Id = new Guid("00000000-0000-0000-0000-000000000001"),
 				Title = "Course 1",
 				Description = "Course 1 Description",
+				ImageName = "1.jpg"
 			});
 			builder.Entity<Course>().HasData(new Course
 			{
 				Id = new Guid("00000000-0000-0000-0000-000000000002"),
 				Title = "Course 2",
 				Description = "Course 2 Description",
+				ImageName = "2.png"
 			});
 			builder.Entity<Course>().HasData(new Course
 			{
 				Id = new Guid("00000000-0000-0000-0000-000000000003"),
 				Title = "Course 3",
 				Description = "Course 3 Description",
+				ImageName = "3.jpg"
 			});
 		}
 

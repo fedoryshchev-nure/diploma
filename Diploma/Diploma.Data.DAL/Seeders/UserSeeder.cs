@@ -1,7 +1,9 @@
 ﻿using Diploma.Common.Constants;
+using Diploma.Data.Entities.Linking;
 using Diploma.Data.Entities.Main.User;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Diploma.Data.DAL.Seeders
@@ -36,7 +38,20 @@ namespace Diploma.Data.DAL.Seeders
 				{
 					Id = new Guid("00000000-0000-0000-0000-000000000002"),
 					UserName = user1Email,
-					Email = user1Email
+					Email = user1Email,
+					UserCourses = new List<UserCourse>
+					{
+						new UserCourse
+						{
+							UserId = new Guid("00000000-0000-0000-0000-000000000002"),
+							CourseId = new Guid("00000000-0000-0000-0000-000000000001")
+						},
+						new UserCourse
+						{
+							UserId = new Guid("00000000-0000-0000-0000-000000000002"),
+							CourseId = new Guid("00000000-0000-0000-0000-000000000002")
+						}
+					}
 				};
 				IdentityResult result = await userManager.CreateAsync(user, defaultPass);
 				if (result.Succeeded)
@@ -51,7 +66,15 @@ namespace Diploma.Data.DAL.Seeders
 				{
 					Id = new Guid("00000000-0000-0000-0000-000000000003"),
 					UserName = user2Email,
-					Email = user2Email
+					Email = user2Email,
+					UserCourses = new List<UserCourse>
+					{
+						new UserCourse
+						{
+							UserId = new Guid("00000000-0000-0000-0000-000000000003"),
+							CourseId = new Guid("00000000-0000-0000-0000-000000000003")
+						}
+					}
 				};
 				IdentityResult result = await userManager.CreateAsync(user, defaultPass);
 				if (result.Succeeded)

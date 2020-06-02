@@ -24,12 +24,8 @@ namespace Diploma.Common.Mappings
 			CreateMap<Course, CourseDto>()
 				.ForMember(x => x.Lessons,
 					opt => opt.MapFrom(x => x.CourseLessons.Select(x => x.Lesson)))
-				.ForMember(x => x.Image,
-					opt => opt.MapFrom(x => new FileDto(x.ImageName)))
 				.ReverseMap();
 			CreateMap<Lesson, LessonDto>()
-				.ForMember(x => x.Image,
-					opt => opt.MapFrom(x => new FileDto(x.ImageName)))
 				.ReverseMap();
 		}
 

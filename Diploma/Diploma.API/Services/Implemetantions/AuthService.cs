@@ -4,6 +4,7 @@ using Diploma.Common.Constants;
 using Diploma.Common.DTOs;
 using Diploma.Common.DTOs.Auth;
 using Diploma.Common.Settings;
+using Diploma.Data.DAL.UnitOfWork;
 using Diploma.Data.Entities.Main.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -20,16 +21,19 @@ namespace Diploma.API.Services.Implemetantions
 		private readonly AuthOptions authSettings;
 
 		private readonly UserManager<User> userManager;
+		private readonly IUnitOfWork unitOfWork;
 
 		private readonly IMapper mapper;
 
 		public AuthService(
 			IOptions<AuthOptions> appSettings,
 			UserManager<User> userManager,
+			IUnitOfWork unitOfWork,
 			IMapper mapper)
 		{
 			authSettings = appSettings.Value;
 			this.userManager = userManager;
+			this.unitOfWork = unitOfWork;
 			this.mapper = mapper;
 		}
 
@@ -55,7 +59,7 @@ namespace Diploma.API.Services.Implemetantions
 		{
 			if (dto == null) throw new ArgumentNullException($"Dto cannot be null");
 
-			var user = await userManager.FindByEmailAsync(dto.Email);
+			var user = await unitOfWork.UserRepository.GetAsync(dto.Email, true);
 			if (user == null) throw new Exception("User not found");
 
 			var valid = await userManager.CheckPasswordAsync(user, dto.Password);

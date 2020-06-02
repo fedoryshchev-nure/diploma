@@ -1,4 +1,8 @@
+const apiUrlBase = "http://localhost:5000";
+
 export const environment = {
   production: true,
-  apiUrl: "https://localhost:44302/api/"
+  apiUrlBase: apiUrlBase,
+  apiUrl: `${apiUrlBase}/api`,
+  apiImageUrl: `${apiUrlBase}/images`,
 };

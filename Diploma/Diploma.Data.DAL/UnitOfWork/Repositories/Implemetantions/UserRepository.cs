@@ -12,11 +12,19 @@ namespace Diploma.Data.DAL.UnitOfWork.Repositories.Implemetantions
 		{
 		}
 
-		public async Task<User> GetAsync(string email, bool disableTracking = false)
+		public async Task<User> GetAsync(string email, bool disableTracking = false, bool includeAll = true)
 		{
 			var query = DbContext.Users
-				.Include(x => x.UserCourses)
-				.Include(x => x.UserLessons);
+				.AsQueryable();
+
+			if (includeAll)
+			{
+				query = query
+					.Include(x => x.UserCourses)
+						.ThenInclude(x => x.Course)
+					.Include(x => x.UserLessons)
+						.ThenInclude(x => x.Lesson);
+			}
 
 			if (disableTracking)
 			{

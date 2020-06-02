@@ -22,5 +22,9 @@
     <ProjectReference Include="..\Diploma.Data.DAL\Diploma.Data.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 
 </Project>

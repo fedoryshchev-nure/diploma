@@ -6,6 +6,6 @@ namespace Diploma.Data.DAL.UnitOfWork.Repositories.Interfaces
 {
 	public interface IUserRepository : IRepository<User>
 	{
-		public Task<User> GetAsync(string email, bool disableTracking = false);
+		public Task<User> GetAsync(string email, bool disableTracking = false, bool includeAll = true);
 	}
 }
