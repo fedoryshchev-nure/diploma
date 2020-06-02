@@ -1,4 +1,5 @@
-﻿using Diploma.Data.Entities.Main.User;
+﻿using Diploma.Common.Constants;
+using Diploma.Data.Entities.Main.User;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace Diploma.Data.DAL.Seeders
 			var adminEmail = "admin@admin.admin";
 			var user1Email = "user1@gmail.com";
 			var user2Email = "user2@gmail.com";
+			var defaultPass = "123456";
 
 			if (await userManager.FindByEmailAsync(adminEmail) == null)
 			{
@@ -21,10 +23,10 @@ namespace Diploma.Data.DAL.Seeders
 					UserName = adminEmail,
 					Email = adminEmail
 				};
-				IdentityResult result = await userManager.CreateAsync(admin, "123456");
+				IdentityResult result = await userManager.CreateAsync(admin, defaultPass);
 				if (result.Succeeded)
 				{
-					await userManager.AddToRoleAsync(admin, "Admin");
+					await userManager.AddToRoleAsync(admin, Roles.Admin);
 				}
 			}
 
@@ -36,10 +38,10 @@ namespace Diploma.Data.DAL.Seeders
 					UserName = user1Email,
 					Email = user1Email
 				};
-				IdentityResult result = await userManager.CreateAsync(user, "123456");
+				IdentityResult result = await userManager.CreateAsync(user, defaultPass);
 				if (result.Succeeded)
 				{
-					await userManager.AddToRoleAsync(user, "User");
+					await userManager.AddToRoleAsync(user, Roles.User);
 				}
 			}
 
@@ -51,10 +53,10 @@ namespace Diploma.Data.DAL.Seeders
 					UserName = user2Email,
 					Email = user2Email
 				};
-				IdentityResult result = await userManager.CreateAsync(user, "123456");
+				IdentityResult result = await userManager.CreateAsync(user, defaultPass);
 				if (result.Succeeded)
 				{
-					await userManager.AddToRoleAsync(user, "User");
+					await userManager.AddToRoleAsync(user, Roles.User);
 				}
 			}
 		}

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Diploma.Common.DTOs
@@ -15,6 +16,6 @@ namespace Diploma.Common.DTOs
 		public string Title { get; set; }
 		[MaxLength(2000)]
 		public string Text { get; set; }
-		public string ImageName { get; set; }
+		public IFormFile Image { get; set; }
 	}
 }

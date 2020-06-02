@@ -18,9 +18,9 @@ export class RegisterComponent implements OnInit {
   errorOccurd = false;
 
   signUpForm = this.fb.group({
-    Email: ['member3@gmail.com', [Validators.required, Validators.email]],
-    Password: ['123456', [Validators.required, Validators.minLength(6)]],
-    ConfirmPassword: ['1234567', [Validators.required, Validators.minLength(6)]],
+    Email: ['', [Validators.required, Validators.email]],
+    Password: ['', [Validators.required, Validators.minLength(6)]],
+    ConfirmPassword: ['', [Validators.required, Validators.minLength(6)]],
   });
 
   constructor(

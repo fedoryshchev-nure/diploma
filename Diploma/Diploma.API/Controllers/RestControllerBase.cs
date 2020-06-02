@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using Diploma.Common.Constants;
 using Diploma.Data.DAL.UnitOfWork;
 using Diploma.Data.Entities.Main;
 using Diploma.Data.Entities.Main.User;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Diploma.API.Controllers
 {
-	[Authorize(Roles = "God")] // No one can access that controller unless rights are specified
+	[Authorize(Roles = Roles.God)] // No one can access that controller unless rights are specified manually
 	[ApiController]
 	[Route("api/[controller]")]
 	public abstract class RestControllerBase<TDto, TEntity> : ControllerBase
@@ -134,5 +137,30 @@ namespace Diploma.API.Controllers
 
 			return user;
 		}
+
+		protected async Task<string> SaveImageAsync(IFormFile file, string previousName = null)
+		{
+			if (!string.IsNullOrEmpty(previousName))
+			{
+				var pathToDelete = GetImagePath(previousName);
+				System.IO.File.Delete(pathToDelete);
+			}
+
+			var fileName = $"{Guid.NewGuid()}-{file.FileName}";
+			var pathToSave = GetImagePath(fileName);
+
+			using (var fs = new FileStream(pathToSave, FileMode.CreateNew))
+			{
+				await file.CopyToAsync(fs);
+			}
+
+			return fileName;
+		}
+
+		private string GetImagePath(string fileName) =>
+			Path.Combine(Directory.GetCurrentDirectory(),
+				"wwwroot",
+				"images",
+				fileName);
 	}
 }

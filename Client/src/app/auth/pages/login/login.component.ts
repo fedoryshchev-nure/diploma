@@ -17,8 +17,8 @@ export class LoginComponent implements OnInit {
   errorOccurd = false;
 
   signInForm = this.fb.group({
-    Email: ['admin@admin.admin', [Validators.required, Validators.email]],
-    Password: ['123456', [Validators.required, Validators.minLength(6)]]
+    Email: ['', [Validators.required, Validators.email]],
+    Password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
   constructor(

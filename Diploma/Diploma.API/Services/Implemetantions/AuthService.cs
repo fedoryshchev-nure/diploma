@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Diploma.API.Services.Interfaces;
+using Diploma.Common.Constants;
 using Diploma.Common.DTOs;
 using Diploma.Common.DTOs.Auth;
 using Diploma.Common.Settings;
@@ -45,7 +46,7 @@ namespace Diploma.API.Services.Implemetantions
 				throw new Exception(string.Join(", ",
 					creationResult.Errors.Select(x => x.Description)));
 
-			await userManager.AddToRoleAsync(user, "User");
+			await userManager.AddToRoleAsync(user, Roles.User);
 
 			return await GetUserDtoWithTokenAsync(user);
 		}
