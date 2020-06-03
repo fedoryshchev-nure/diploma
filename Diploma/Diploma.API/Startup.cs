@@ -101,6 +101,8 @@ namespace Diploma
 
 				ValidateIssuerSigningKey = true,
 				IssuerSigningKey = securityKey,
+
+				ValidateLifetime = true
 			};
 			services
 				.AddAuthentication(options =>
@@ -108,13 +110,12 @@ namespace Diploma
 					options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 					options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 				})
-				.AddJwtBearer(configureOptions =>
+				.AddJwtBearer(options =>
 				{
-					configureOptions.ClaimsIssuer = authOptionsSection[nameof(AuthOptions.Issuer)];
-					configureOptions.TokenValidationParameters = tokenValidationParameters;
-					configureOptions.SaveToken = true;
+					options.ClaimsIssuer = authOptionsSection[nameof(AuthOptions.Issuer)];
+					options.TokenValidationParameters = tokenValidationParameters;
+					options.SaveToken = true;
 				});
-
 
 			services.AddScoped<IAuthService, AuthService>();
 
@@ -149,6 +150,7 @@ namespace Diploma
 
 			app.UseRouting();
 
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>

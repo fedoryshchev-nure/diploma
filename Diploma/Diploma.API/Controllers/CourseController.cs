@@ -3,7 +3,9 @@ using Diploma.Common.Constants;
 using Diploma.Common.DTOs;
 using Diploma.Data.DAL.UnitOfWork;
 using Diploma.Data.Entities.Main.Course;
+using Diploma.Data.Entities.Main.User;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,25 +13,32 @@ using System.Threading.Tasks;
 
 namespace Diploma.API.Controllers
 {
-	[Authorize(Roles = Roles.Admin)]
 	public class CourseController : RestControllerBase<CourseDto, Course>
 	{
+		private readonly UserManager<User> userManager;
 		public CourseController(
+			UserManager<User> userManager,
 			IUnitOfWork unitOfWork,
 			IMapper mapper) : base(unitOfWork, mapper)
 		{
+			this.userManager = userManager;
 		}
 
-		[AllowAnonymous]
-		[HttpGet("{id:Guid}")]
 		public override async Task<ActionResult<CourseDto>> Get(Guid id)
 		{
 			try
 			{
+				var authorized = false;
+				if (CurrentUser != null)
+				{
+					var roles = await userManager.GetRolesAsync(CurrentUser);
+					authorized |= roles.Contains(Roles.User) || roles.Contains(Roles.Admin);
+				}
+
 				var query = unitOfWork
 					.Query<Course>();
 
-				if (User.IsInRole(Roles.User) || User.IsInRole(Roles.Admin))
+				if (authorized)
 				{
 					query = query.Include(x => x.CourseLessons)
 						.ThenInclude(x => x.Lesson);
@@ -45,7 +54,7 @@ namespace Diploma.API.Controllers
 			}
 		}
 
-		[HttpPost]
+		[Authorize(Roles = Roles.Admin)]
 		public override async Task<ActionResult<CourseDto>> Create([FromForm]CourseDto dto)
 		{
 			try
@@ -63,7 +72,7 @@ namespace Diploma.API.Controllers
 			}
 		}
 
-		[HttpPut("{id}")]
+		[Authorize(Roles = Roles.Admin)]
 		public override async Task<ActionResult<CourseDto>> Update(Guid id, CourseDto dto)
 		{
 			try
@@ -85,6 +94,12 @@ namespace Diploma.API.Controllers
 			{
 				return BadRequest(ex);
 			}
+		}
+
+		[Authorize(Roles = Roles.Admin)]
+		public override ActionResult<CourseDto> Delete(Guid id)
+		{
+			return base.Delete(id);
 		}
 	}
 }

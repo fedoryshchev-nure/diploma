@@ -1,5 +1,6 @@
 import { Lesson } from './lesson';
 import { environment } from 'src/environments/environment';
+import { Placeholders } from '../../helpers/defaults/placeholders';
 
 export class Course {
     constructor(
@@ -14,7 +15,7 @@ export class Course {
     public get imageUrl() {
         const imageLink = this.imageName
             ? `${environment.apiImageUrl}/${this.imageName}`
-            : "assets/images/default-placeholder.png";
+            : new Placeholders().imagePlaceholder;
         return imageLink
     }
 }

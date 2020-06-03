@@ -4,18 +4,15 @@ using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
-using Diploma.Common.Constants;
 using Diploma.Common.DTOs;
 using Diploma.Data.DAL.UnitOfWork;
 using Diploma.Data.Entities.Main;
 using Diploma.Data.Entities.Main.User;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Diploma.API.Controllers
 {
-	[Authorize(Roles = Roles.Admin)]
 	[ApiController]
 	[Route("api/[controller]")]
 	public abstract class RestControllerBase<TDto, TEntity> : ControllerBase
@@ -37,7 +34,6 @@ namespace Diploma.API.Controllers
 			this.mapper = mapper;
 		}
 
-		[AllowAnonymous]
 		[HttpGet]
 		public virtual async Task<ActionResult<PagedDto<TDto>>> Get(
 			int page,
@@ -58,7 +54,6 @@ namespace Diploma.API.Controllers
 			}
 		}
 
-		[AllowAnonymous]
 		[HttpGet("{id:Guid}")]
 		public virtual async Task<ActionResult<TDto>> Get(Guid id)
 		{
@@ -92,7 +87,7 @@ namespace Diploma.API.Controllers
 			}
 		}
 
-		[HttpPut("{id}")]
+		[HttpPut("{id:Guid}")]
 		public virtual async Task<ActionResult<TDto>> Update(Guid id, TDto dto)
 		{
 			try
@@ -115,7 +110,7 @@ namespace Diploma.API.Controllers
 			}
 		}
 
-		[HttpDelete("{id}")]
+		[HttpDelete("{id:Guid}")]
 		public virtual ActionResult<TDto> Delete(Guid id)
 		{
 			try
@@ -132,11 +127,12 @@ namespace Diploma.API.Controllers
 
 		private async Task<User> GetCurrentUserAsync()
 		{
-			if (this.User == null
-				|| this.User.Identity == null
-				|| !this.User.Identity.IsAuthenticated) return null;
+			if (!(User?.Identity?.IsAuthenticated ?? false))
+				return null;
 
-			var email = User.FindFirst(ClaimTypes.Email).Value;
+			var email = User.FindFirstValue(ClaimTypes.Email);
+			if (email == null) return null;
+
 			var user = await unitOfWork.UserRepository
 				.GetAsync(email);
 

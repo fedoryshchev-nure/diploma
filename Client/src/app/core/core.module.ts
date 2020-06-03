@@ -4,16 +4,15 @@ import { HttpClientModule } from "@angular/common/http";
 import { RouterModule } from '@angular/router';
 import { JwtModule } from "@auth0/angular-jwt";
 
+import { SharedModule } from '../shared/shared.module';
+
 import { environment } from 'src/environments/environment';
 
-import { SharedModule } from '../shared/shared.module';
 import { HeaderComponent } from './components/header/header.component';
 
 export function tokenGetter() {
   return (JSON.parse(localStorage.getItem("currentUser")) || {}).token;
 }
-
-const pureApiUrl = environment.apiUrl.substring(0, environment.apiUrl.length - 4);
 
 @NgModule({
   declarations: [HeaderComponent],
@@ -24,7 +23,7 @@ const pureApiUrl = environment.apiUrl.substring(0, environment.apiUrl.length - 4
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        whitelistedDomains: [pureApiUrl]
+        whitelistedDomains: [environment.noSchemaApiUrlBase]
       }
     }),
     SharedModule
