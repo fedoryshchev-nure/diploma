@@ -5,6 +5,9 @@
     <app-img class="card-img" src={{course?.imageUrl}}> </app-img>
     <div class="card-body">
         <p class="card-text">{{course?.description}}</p>
-        <a href="#" class="btn btn-primary">Attend</a>
+        <button routerLink="" class="btn btn-primary" [disabled]=!authService.currentUserValue data-toggle="tooltip"
+            data-placement="top" title="Authorize first">
+            Attend
+        </button>
     </div>
 </div>

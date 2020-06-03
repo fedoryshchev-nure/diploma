@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Observable, of } from 'rxjs';
 
 import { AuthService } from 'src/app/core/services/auth.service';
 
@@ -14,7 +15,7 @@ export class LoginComponent implements OnInit {
   email = 'Email';
   password = 'Password';
 
-  errorOccurd = false;
+  errors$: Observable<string[]>;
 
   signInForm = this.fb.group({
     Email: ['', [Validators.required, Validators.email]],
@@ -34,8 +35,8 @@ export class LoginComponent implements OnInit {
     if (this.signInForm.valid) {
       this.authService.login(this.signInForm.value).subscribe(() => {
         this.router.navigate(['/']);
-      }, () => {
-        this.errorOccurd = true;
+      }, err => {
+        this.errors$ = of([err.error.Message]);
       });
     }
   }

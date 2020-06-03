@@ -35,3 +35,8 @@
     </form>
     <br>
 </div>
+
+<div *ngIf="(errors$ | async) as errors" class="col-md-4 offset-4">
+    <app-errors [messages]=errors>
+    </app-errors>
+</div>

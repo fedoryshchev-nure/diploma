@@ -21,6 +21,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Diploma
 {
@@ -43,7 +45,11 @@ namespace Diploma
 					builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().Build();
 				});
 			});
-			services.AddControllers();
+			services.AddControllers()
+				.AddNewtonsoftJson(options =>
+				{
+					options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+				});
 
 			#region Settings
 

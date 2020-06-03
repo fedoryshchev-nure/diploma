@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
+import { AuthService } from 'src/app/core/services/auth.service';
+
 import { Course } from 'src/app/shared/models/course/course';
 
 @Component({
@@ -10,7 +12,7 @@ import { Course } from 'src/app/shared/models/course/course';
 export class CourseComponent implements OnInit {
   @Input() course: Course = new Course();
 
-  constructor() { }
+  constructor(public authService: AuthService) { }
 
   ngOnInit(): void {
   }

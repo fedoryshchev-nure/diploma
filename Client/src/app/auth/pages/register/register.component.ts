@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Validators, FormBuilder } from '@angular/forms';
+import { Observable, of } from 'rxjs';
 
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ConfirmPassValdiator } from 'src/app/auth/validators/confirm-password';
@@ -15,7 +16,7 @@ export class RegisterComponent implements OnInit {
   password = 'Password';
   confirmPassword = 'ConfirmPassword';
 
-  errorOccurd = false;
+  errors$: Observable<string[]>;
 
   signUpForm = this.fb.group({
     Email: ['', [Validators.required, Validators.email]],
@@ -38,8 +39,8 @@ export class RegisterComponent implements OnInit {
     if (this.signUpForm.valid) {
       this.authService.register(this.signUpForm.value).subscribe(x => {
         this.router.navigate(['/account/signin']);
-      }, error => {
-        this.errorOccurd = true;
+      }, err => {
+        this.errors$ = of([err.error.Message]);
       });
     }
   }
