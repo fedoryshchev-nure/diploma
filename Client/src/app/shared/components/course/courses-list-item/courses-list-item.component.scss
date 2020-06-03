@@ -1,28 +1,27 @@
-
-
 .card {
-    display: flex;
-    height: 100%;
-    max-height: 380px;
+	display: flex;
+	height: 100%;
+	max-height: 380px;
 
-    .card-img-top {
-        width: 150px;
-        height: 150px;
-        margin: 15px auto;
-    }
+	.card-img-top {
+		width: 150px;
+		height: 150px;
+		margin: 15px auto;
+	}
 
-    .card-title, .card-text {
-        overflow: hidden; 
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-    }
+	.card-title,
+	.card-text {
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+	}
 
-    .card-title {
-        -webkit-line-clamp: 1;
-    }
+	.card-title {
+		-webkit-line-clamp: 1;
+	}
 
-    .card-text {
-        -webkit-line-clamp: 3;
-        height: 72px;
-    }
+	.card-text {
+		-webkit-line-clamp: 3;
+		height: 72px;
+	}
 }

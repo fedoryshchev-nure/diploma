@@ -7,11 +7,11 @@ const schema = "https";
 const apiUrlBase = `${schema}://${noSchemaApiUrlBase}`;
 
 export const environment = {
-  production: false,
-  noSchemaApiUrlBase: noSchemaApiUrlBase,
-  apiUrlBase: apiUrlBase,
-  apiUrl: `${apiUrlBase}/api`,
-  apiImageUrl: `${apiUrlBase}/images`,
+	production: false,
+	noSchemaApiUrlBase,
+	apiUrlBase,
+	apiUrl: `${apiUrlBase}/api`,
+	apiImageUrl: `${apiUrlBase}/images`,
 };
 
 /*

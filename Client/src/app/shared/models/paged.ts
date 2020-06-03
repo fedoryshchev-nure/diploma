@@ -1,6 +1,3 @@
 export class Paged<TModel> {
-    constructor(
-        public items: TModel[],
-        public total: number
-    ) { }
+	constructor(public items: TModel[], public total: number) {}
 }

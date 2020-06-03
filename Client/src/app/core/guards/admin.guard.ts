@@ -1,24 +1,21 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { Injectable } from "@angular/core";
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from "@angular/router";
 
-import { AuthService } from '../services/auth.service';
+import { UserService } from "../services/user.service";
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: "root",
 })
 export class AdminGuard implements CanActivate {
-  constructor(
-    private router: Router,
-    private authenticationService: AuthService
-  ) { }
+	constructor(private router: Router, private userService: UserService) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const isAdmin = this.authenticationService.isAdmin();
+	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+		const isAdmin = this.userService.isAdmin();
 
-    if (!isAdmin) {
-      this.router.navigate(['auth/login']);
-    }
+		if (!isAdmin) {
+			this.router.navigate(["auth/login"]);
+		}
 
-    return isAdmin;
-  }
+		return isAdmin;
+	}
 }

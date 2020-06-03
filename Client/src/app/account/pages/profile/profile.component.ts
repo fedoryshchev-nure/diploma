@@ -1,40 +1,40 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, BehaviorSubject, of } from 'rxjs';
+import { Component, OnInit } from "@angular/core";
+import { Observable, BehaviorSubject, of } from "rxjs";
+import { map } from "rxjs/operators";
 
-import { AuthService } from 'src/app/core/services/auth.service';
+import { UserService } from "src/app/core/services/user.service";
 
-import { Course } from 'src/app/shared/models/course/course';
-import { Filter } from 'src/app/shared/helpers/defaults/filter';
+import { Course } from "src/app/shared/models/course/course";
+import { Filter } from "src/app/shared/helpers/defaults/filter";
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+	selector: "app-profile",
+	templateUrl: "./profile.component.html",
+	styleUrls: ["./profile.component.scss"],
 })
 export class ProfileComponent implements OnInit {
-  public courses$: Observable<Course[]>;
-  public total$: Observable<number>;
+	public courses$: Observable<Course[]>;
+	public total$: Observable<number>;
 
-  public filters = new BehaviorSubject(new Filter());
+	public filters = new BehaviorSubject(new Filter());
 
-  constructor(private authService: AuthService) { }
+	constructor(private userService: UserService) {}
 
-  ngOnInit(): void {
-    this.filters.subscribe(filters => {
-      const courses = this.authService.currentUserValue.courses
-        .slice(filters.page * filters.pageSize, filters.pageSize)
-        .map(course => Object.assign(new Course(), course)); // Getter is not mapped unless you assign it intentioally 
+	ngOnInit(): void {
+		this.filters.subscribe((filters) => {
+			this.courses$ = this.userService.user$.pipe(
+				map((user) => user.courses.slice(filters.page * filters.pageSize, filters.pageSize)),
+				map((courses) => courses.map((course) => Object.assign(new Course(), course))) // Getter is not mapped unless you assign it intentioally
+			);
+			this.total$ = this.userService.user$.pipe(map((user) => user.courses.length));
+		});
+	}
 
-      this.courses$ = of(courses);
-      this.total$ = of(this.authService.currentUserValue.courses.length)
-    })
-  }
-
-  updateFilters(newFilters) {
-    this.filters.next({
-      ...this.filters.getValue(),
-      ...newFilters,
-      page: newFilters.pageIndex
-    });
-  }
+	updateFilters(newFilters) {
+		this.filters.next({
+			...this.filters.getValue(),
+			...newFilters,
+			page: newFilters.pageIndex,
+		});
+	}
 }

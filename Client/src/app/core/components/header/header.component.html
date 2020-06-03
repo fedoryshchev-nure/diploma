@@ -1,28 +1,27 @@
 <nav class="navbar navbar-dark bg-dark mb-5">
-    <div class="navbar-brand">
-        <a routerLink="/" class="navbar-brand">Home</a>
-    </div>
-    <div class="btn-group">
-        <div class="btn-group account-options-toggle">
-            <button type="button" class="btn btn-outline-light" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-                <span class="material-icons">
-                    person
-                </span>
-            </button>
-            <div class="dropdown-menu">
-                <div *ngIf="authService.currentUserValue else anonymous">
-                    <span *ngIf="authService.isAdmin() else user" routerLink="/admin" class="dropdown-item">Admin</span>
-                    <ng-template #user>
-                        <span routerLink="/account/profile" class="dropdown-item">Account</span>
-                    </ng-template>
-                    <span (click)="authService.logout()" class="dropdown-item">Logout</span>
-                </div>
-                <ng-template #anonymous>
-                    <span routerLink="/auth/login" class="dropdown-item">Login</span>
-                    <span routerLink="/auth/register" class="dropdown-item">Register</span>
-                </ng-template>
-            </div>
-        </div>
-    </div>
+	<div class="navbar-brand">
+		<a routerLink="/" class="navbar-brand">Home</a>
+	</div>
+	<div class="btn-group">
+		<div class="btn-group account-options-toggle">
+			<button type="button" class="btn btn-outline-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span class="material-icons">
+					person
+				</span>
+			</button>
+			<div class="dropdown-menu">
+				<div *ngIf="userService.user$ | async; else anonymous">
+					<span *ngIf="userService.isAdmin(); else user" routerLink="/admin" class="dropdown-item">Admin</span>
+					<ng-template #user>
+						<span routerLink="/account/profile" class="dropdown-item">Account</span>
+					</ng-template>
+					<span (click)="authService.logout()" class="dropdown-item">Logout</span>
+				</div>
+				<ng-template #anonymous>
+					<span routerLink="/auth/login" class="dropdown-item">Login</span>
+					<span routerLink="/auth/register" class="dropdown-item">Register</span>
+				</ng-template>
+			</div>
+		</div>
+	</div>
 </nav>

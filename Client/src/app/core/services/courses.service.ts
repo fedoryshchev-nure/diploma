@@ -1,17 +1,17 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
 
-import { RestBaseService } from './rest-base.service';
+import { RestBaseService } from "./rest-base.service";
 
-import { Course } from 'src/app/shared/models/course/course';
+import { Course } from "src/app/shared/models/course/course";
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: "root",
 })
 export class CourseService extends RestBaseService<Course> {
-  protected controllerName = "course";
+	protected controllerName = "course";
 
-  constructor(httpClient: HttpClient) {
-    super(httpClient);
-  }
+	constructor(httpClient: HttpClient) {
+		super(httpClient);
+	}
 }

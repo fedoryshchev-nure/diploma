@@ -1,13 +1,24 @@
 <div class="card">
-    <h3 class="card-header text-center">
-        {{course?.title || "Title"}}
-    </h3>
-    <app-img class="card-img" src={{course?.imageUrl}}> </app-img>
-    <div class="card-body">
-        <p class="card-text">{{course?.description}}</p>
-        <button routerLink="" class="btn btn-primary" [disabled]=!authService.currentUserValue data-toggle="tooltip"
-            data-placement="top" title="Authorize first">
-            Attend
-        </button>
-    </div>
+	<h3 class="card-header text-center">
+		{{ course?.title || "Title" }}
+	</h3>
+	<app-img class="card-img" src="{{ course?.imageUrl }}"> </app-img>
+	<div class="card-body">
+		<p class="card-text">{{ course?.description }}</p>
+		<button *ngIf="userService.isAttendingCourse(course?.id) | async; else attend" routerLink="" class="btn btn-primary">
+			Go to lessons
+		</button>
+		<ng-template #attend>
+			<button
+				[disabled]="!(userService.user$ | async)"
+				(click)="attendCourse()"
+				class="btn btn-primary"
+				data-toggle="tooltip"
+				data-placement="top"
+				title="Authorize first"
+			>
+				Attend
+			</button>
+		</ng-template>
+	</div>
 </div>

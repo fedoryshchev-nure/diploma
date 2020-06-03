@@ -1,11 +1,26 @@
 <div class="row justify-content-center">
-    <div class="nav flex-row flex-md-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-        <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
-            aria-controls="v-pills-home" aria-selected="true">text</a>
-    </div>
-    <div class="tab-content flex-grow-1" id="v-pills-tabContent">
-        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-            <app-lessons-list-item></app-lessons-list-item>
-        </div>
-    </div>
+	<div class="nav flex-row flex-md-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+		<a
+			*ngFor="let lesson of lessons; index as i"
+			[attr.href]="'#v-pills-' + i"
+			[attr.id]="'v-pills-' + i + '-tab'"
+			[class]="'nav-link ' + (i == 0 ? 'active' : '')"
+			[attr.aria-controls]="'v-pills-' + i"
+			data-toggle="pill"
+			role="tab"
+			aria-selected="true"
+			>{{ lesson.title }}</a
+		>
+	</div>
+	<div class="tab-content flex-grow-1" id="v-pills-tabContent">
+		<div
+			*ngFor="let lesson of lessons; index as i"
+			[class]="'tab-pane fade ' + (i == 0 ? 'show active' : '')"
+			[attr.id]="'v-pills-' + i"
+			[attr.aria-labelledby]="'v-pills-' + i + '-tab'"
+			role="tabpanel"
+		>
+			<app-lessons-list-item [lesson]="lesson"></app-lessons-list-item>
+		</div>
+	</div>
 </div>

@@ -1,6 +1,3 @@
 export class Filter {
-    constructor(
-        public page = 0,
-        public pageSize = 24
-    ) { }
+	constructor(public page = 0, public pageSize = 24) {}
 }

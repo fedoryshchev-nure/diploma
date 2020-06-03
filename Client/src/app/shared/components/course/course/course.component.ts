@@ -1,20 +1,31 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from "@angular/core";
 
-import { AuthService } from 'src/app/core/services/auth.service';
+import { UserService } from "src/app/core/services/user.service";
+import { CourseService } from "src/app/core/services/courses.service";
 
-import { Course } from 'src/app/shared/models/course/course';
+import { Course } from "src/app/shared/models/course/course";
+import { Subscription } from "rxjs";
+import { Router, ActivatedRoute } from "@angular/router";
 
 @Component({
-  selector: 'app-course',
-  templateUrl: './course.component.html',
-  styleUrls: ['./course.component.scss']
+	selector: "app-course",
+	templateUrl: "./course.component.html",
+	styleUrls: ["./course.component.scss"],
 })
-export class CourseComponent implements OnInit {
-  @Input() course: Course = new Course();
+export class CourseComponent implements OnInit, OnDestroy {
+	@Input() course: Course = new Course();
 
-  constructor(public authService: AuthService) { }
+	attendSubscription: Subscription;
 
-  ngOnInit(): void {
-  }
+	constructor(private router: Router, private route: ActivatedRoute, public userService: UserService) {}
 
+	public attendCourse() {
+		this.attendSubscription = this.userService.attendCourse(this.course.id).subscribe(() => this.router.navigate(["course", this.course.id, "lesson"]));
+	}
+
+	ngOnInit(): void {}
+
+	ngOnDestroy(): void {
+		if (this.attendSubscription) this.attendSubscription.unsubscribe();
+	}
 }

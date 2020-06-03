@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'app-edit-course',
-  templateUrl: './edit-course.component.html',
-  styleUrls: ['./edit-course.component.scss']
+	selector: "app-edit-course",
+	templateUrl: "./edit-course.component.html",
+	styleUrls: ["./edit-course.component.scss"],
 })
 export class EditCourseComponent implements OnInit {
+	constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+	ngOnInit(): void {}
 }
