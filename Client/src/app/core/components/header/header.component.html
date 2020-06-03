@@ -1,8 +1,6 @@
 <nav class="navbar navbar-dark bg-dark mb-5">
     <div class="navbar-brand">
         <a routerLink="/" class="navbar-brand">Home</a>
-        <a *ngIf="authService.currentUserValue" routerLink="state/data" class="navbar-brand">Route 1</a>
-        <a *ngIf="authService.currentUserValue" routerLink="state/statistics" class="navbar-brand">Route 2</a>
     </div>
     <div class="btn-group">
         <div class="btn-group account-options-toggle">
@@ -16,16 +14,14 @@
                 <div *ngIf="authService.currentUserValue else anonymous">
                     <span *ngIf="authService.isAdmin() else user" routerLink="/admin" class="dropdown-item">Admin</span>
                     <ng-template #user>
-                        <span routerLink="/account/edit-profile" class="dropdown-item">Account</span>
+                        <span routerLink="/account/profile" class="dropdown-item">Account</span>
                     </ng-template>
 
                     <span (click)="authService.logout()" class="dropdown-item">Logout</span>
                 </div>
                 <ng-template #anonymous>
-                    <div>
-                        <span routerLink="/auth/login" class="dropdown-item">Login</span>
-                        <span routerLink="/auth/register" class="dropdown-item">Register</span>
-                    </div>
+                    <span routerLink="/auth/login" class="dropdown-item">Login</span>
+                    <span routerLink="/auth/register" class="dropdown-item">Register</span>
                 </ng-template>
             </div>
         </div>

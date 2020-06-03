@@ -35,5 +35,4 @@ export class CoursesComponent implements OnInit {
       page: newFilters.pageIndex
     });
   }
-
 }

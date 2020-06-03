@@ -23,7 +23,7 @@ const routes: Routes = [
   },
   {
     path: "admin",
-    loadChildren: () => import("./account/account.module").then(m => m.AccountModule),
+    loadChildren: () => import("./admin/admin.module").then(m => m.AdminModule),
     canActivate: [AuthGuard, AdminGuard]
   },
   {
