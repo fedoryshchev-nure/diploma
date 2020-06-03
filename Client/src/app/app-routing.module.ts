@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { AnonymousGuard } from './core/guards/anonymous.guard';
 import { AuthGuard } from './core/guards/auth.guard';
 import { AdminGuard } from './core/guards/admin.guard';
-import { AnonymousGuard } from './core/guards/anonymous.guard';
-
 
 const routes: Routes = [
   {

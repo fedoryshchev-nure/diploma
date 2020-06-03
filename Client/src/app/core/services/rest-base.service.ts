@@ -18,8 +18,7 @@ export abstract class RestBaseService<TModel> {
   }
 
   get(id: string): Observable<TModel> {
-    return this.http.get<TModel>(`${environment.apiUrl}/${this.controllerName}`,
-      { params: { id } });
+    return this.http.get<TModel>(`${environment.apiUrl}/${this.controllerName}/${id}`);
   }
 
   post(model: TModel): Observable<TModel> {

@@ -21,8 +21,8 @@ namespace Diploma.API.Controllers
 		}
 
 		[AllowAnonymous]
-		[HttpGet("{id}")]
-		public new async Task<ActionResult<CourseDto>> Get(Guid id)
+		[HttpGet("{id:Guid}")]
+		public override async Task<ActionResult<CourseDto>> Get(Guid id)
 		{
 			try
 			{
@@ -46,7 +46,7 @@ namespace Diploma.API.Controllers
 		}
 
 		[HttpPost]
-		public new async Task<ActionResult<CourseDto>> Create([FromForm]CourseDto dto)
+		public override async Task<ActionResult<CourseDto>> Create([FromForm]CourseDto dto)
 		{
 			try
 			{
@@ -64,7 +64,7 @@ namespace Diploma.API.Controllers
 		}
 
 		[HttpPut("{id}")]
-		public new async Task<ActionResult<CourseDto>> Update(Guid id, CourseDto dto)
+		public override async Task<ActionResult<CourseDto>> Update(Guid id, CourseDto dto)
 		{
 			try
 			{

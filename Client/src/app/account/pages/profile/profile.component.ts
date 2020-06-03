@@ -22,7 +22,9 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.filters.subscribe(filters => {
       const courses = this.authService.currentUserValue.courses
-        .slice(filters.page * filters.pageSize, filters.pageSize);
+        .slice(filters.page * filters.pageSize, filters.pageSize)
+        .map(course => Object.assign(new Course(), course)); // Getter is not mapped unless you assign it intentioally 
+
       this.courses$ = of(courses);
       this.total$ = of(this.authService.currentUserValue.courses.length)
     })

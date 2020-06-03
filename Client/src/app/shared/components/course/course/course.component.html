@@ -1,1 +1,10 @@
-<p>course works!</p>
+<div class="card">
+    <h3 class="card-header text-center">
+        {{course?.title || "Title"}}
+    </h3>
+    <img class="card-img" src={{course?.imageUrl}}>
+    <div class="card-body">
+        <p class="card-text">{{course?.description}}</p>
+        <a href="#" class="btn btn-primary">Attend</a>
+    </div>
+</div>

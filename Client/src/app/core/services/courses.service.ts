@@ -8,7 +8,7 @@ import { Course } from 'src/app/shared/models/course/course';
 @Injectable({
   providedIn: 'root'
 })
-export class CoursesService extends RestBaseService<Course> {
+export class CourseService extends RestBaseService<Course> {
   protected controllerName = "course";
 
   constructor(httpClient: HttpClient) {

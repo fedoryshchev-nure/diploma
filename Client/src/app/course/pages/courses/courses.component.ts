@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { CoursesService } from 'src/app/core/services/courses.service';
+import { CourseService } from 'src/app/core/services/courses.service';
 
 import { Course } from 'src/app/shared/models/course/course';
 import { Filter } from 'src/app/shared/helpers/defaults/filter';
@@ -18,12 +18,14 @@ export class CoursesComponent implements OnInit {
 
   public filters = new BehaviorSubject(new Filter());
 
-  constructor(private coursesService: CoursesService) { }
+  constructor(private courseService: CourseService) { }
 
   ngOnInit(): void {
     this.filters.subscribe(filters => {
-      const tmp = this.coursesService.getAll(filters);
-      this.courses$ = tmp.pipe(map(x => x.items));
+      const tmp = this.courseService.getAll(filters);
+      this.courses$ = tmp.pipe(
+        map(x => x.items
+          .map(course => Object.assign(new Course(), course))));  // Getter is not mapped unless you assign it intentioally 
       this.total$ = tmp.pipe(map(x => x.total));
     })
   }

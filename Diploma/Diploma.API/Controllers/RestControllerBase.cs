@@ -39,7 +39,7 @@ namespace Diploma.API.Controllers
 
 		[AllowAnonymous]
 		[HttpGet]
-		public async Task<ActionResult<PagedDto<TDto>>> Get(
+		public virtual async Task<ActionResult<PagedDto<TDto>>> Get(
 			int page,
 			int? pageSize)
 		{
@@ -59,8 +59,8 @@ namespace Diploma.API.Controllers
 		}
 
 		[AllowAnonymous]
-		[HttpGet("{id}")]
-		public async Task<ActionResult<TDto>> Get(Guid id)
+		[HttpGet("{id:Guid}")]
+		public virtual async Task<ActionResult<TDto>> Get(Guid id)
 		{
 			try
 			{
@@ -76,7 +76,7 @@ namespace Diploma.API.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<TDto>> Create(TDto dto)
+		public virtual async Task<ActionResult<TDto>> Create(TDto dto)
 		{
 			try
 			{
@@ -93,7 +93,7 @@ namespace Diploma.API.Controllers
 		}
 
 		[HttpPut("{id}")]
-		public async Task<ActionResult<TDto>> Update(Guid id, TDto dto)
+		public virtual async Task<ActionResult<TDto>> Update(Guid id, TDto dto)
 		{
 			try
 			{
@@ -116,7 +116,7 @@ namespace Diploma.API.Controllers
 		}
 
 		[HttpDelete("{id}")]
-		public ActionResult<TDto> Delete(Guid id)
+		public virtual ActionResult<TDto> Delete(Guid id)
 		{
 			try
 			{
