@@ -18,5 +18,6 @@ namespace Diploma.Common.DTOs
 		public string Text { get; set; }
 		public IFormFile Image { get; set; }
 		public string ImageName { get; set; }
+		public bool IsCompleted { get; set; }
 	}
 }

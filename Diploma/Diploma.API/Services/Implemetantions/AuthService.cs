@@ -5,10 +5,13 @@ using Diploma.Common.DTOs;
 using Diploma.Common.DTOs.Auth;
 using Diploma.Common.Settings;
 using Diploma.Data.DAL.UnitOfWork;
+using Diploma.Data.Entities.Linking;
 using Diploma.Data.Entities.Main.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using MoreLinq;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -70,7 +73,13 @@ namespace Diploma.API.Services.Implemetantions
 
 		private async Task<UserDto> GetUserDtoWithTokenAsync(User user)
 		{
+			var lessons = user.UserLessons.ToDictionary(x => x.LessonId, x => x);
 			var userDto = mapper.Map<UserDto>(user);
+			userDto.Courses.ForEach(course =>
+				course.Lessons.ForEach(lesson =>
+					lesson.IsCompleted = lessons.ContainsKey(lesson.Id) && lessons[lesson.Id].IsCompleted
+				)
+			);
 			userDto.Token = await GenerateEncodedTokenAsync(user);
 			return userDto;
 		}

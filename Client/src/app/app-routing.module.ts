@@ -25,10 +25,10 @@ const routes: Routes = [
 		loadChildren: () => import("./admin/admin.module").then((m) => m.AdminModule),
 		canActivate: [AuthGuard, AdminGuard],
 	},
-	// {
-	// 	path: "**",
-	// 	redirectTo: "course",
-	// },
+	{
+		path: "**",
+		redirectTo: "course",
+	},
 ];
 
 @NgModule({

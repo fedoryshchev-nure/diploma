@@ -14,12 +14,13 @@ import { Lesson } from "src/app/shared/models/course/lesson";
 })
 export class LessonsComponent implements OnInit {
 	public lessons$: Observable<Lesson[]>;
+	public courseId = "";
 
 	constructor(private route: ActivatedRoute, private courseService: CourseService) {}
 
 	ngOnInit(): void {
-		const courseId = this.route.parent.snapshot.paramMap.get("courseId");
-		this.lessons$ = this.courseService.get(courseId).pipe(
+		this.courseId = this.route.parent.snapshot.paramMap.get("courseId");
+		this.lessons$ = this.courseService.get(this.courseId).pipe(
 			map((course) => course.lessons),
 			map((lessons) => lessons.map((lesson) => Object.assign(new Lesson(), lesson))) // Getter is not mapped unless you assign it intentioally
 		);

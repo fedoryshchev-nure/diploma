@@ -2,13 +2,16 @@
 using Diploma.Common.Constants;
 using Diploma.Common.DTOs;
 using Diploma.Data.DAL.UnitOfWork;
+using Diploma.Data.Entities.Linking;
 using Diploma.Data.Entities.Main.Course;
 using Diploma.Data.Entities.Main.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MoreLinq;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Diploma.API.Controllers
@@ -46,7 +49,36 @@ namespace Diploma.API.Controllers
 
 				var courses = await query.FirstOrDefaultAsync(x => x.Id == id);
 				var dtos = mapper.Map<CourseDto>(courses);
+				var lessons = CurrentUser.UserLessons.ToDictionary(x => x.LessonId, x => x);
+				dtos.Lessons.ForEach(lesson => {
+					lesson.IsCompleted = lessons.ContainsKey(lesson.Id) && lessons[lesson.Id].IsCompleted;
+					}
+				);
 				return Ok(dtos);
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex);
+			}
+		}
+
+		[Authorize(Roles = Roles.User)]
+		[HttpGet("{id:Guid}/[action]")]
+		public async Task<ActionResult<CourseDto>> Attend(Guid id)
+		{
+			try
+			{
+				if (CurrentUser?.UserCourses?.Any(x => x.CourseId == id) ?? false)
+					return BadRequest("Already attending");
+
+				var course = await unitOfWork.CourseRepository.GetAsync(id);
+				if (course == null) return NotFound();
+
+				course.UserCourses.Add(new UserCourse { UserId = CurrentUser.Id, CourseId = course.Id });
+				await unitOfWork.SaveChangesAsync();
+
+				var dto = mapper.Map<CourseDto>(course);
+				return Ok(dto);
 			}
 			catch (Exception ex)
 			{

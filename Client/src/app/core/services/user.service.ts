@@ -8,6 +8,7 @@ import { AuthService } from "./auth.service";
 
 import { User } from "src/app/shared/models/user";
 import { Course } from "src/app/shared/models/course/course";
+import { Lesson } from "src/app/shared/models/course/lesson";
 
 import { environment } from "src/environments/environment";
 
@@ -28,11 +29,27 @@ export class UserService {
 	}
 
 	public attendCourse(id: string): Observable<Course> {
-		return this.http.get<Course>(`${environment.apiUrl}/course/attend/${id}`).pipe(
+		return this.http.get<Course>(`${environment.apiUrl}/course/${id}/attend`).pipe(
 			tap((course) => {
-				console.log(course);
 				const user = this.authService.currentUserValue;
 				user.courses.push(course);
+				this.authService.rewriteCache(user);
+			})
+		);
+	}
+
+	public completeLesson(courseId: string, lesson: Lesson) {
+		return this.http.get(`${environment.apiUrl}/lesson/${lesson.id}/complete`).pipe(
+			tap(() => {
+				const user = this.authService.currentUserValue;
+				const userLessons = user.courses.find((x) => x.id === courseId).lessons;
+				const lsn = userLessons.find((x) => x.id === lesson.id);
+				if (lsn) lsn.isCompleted = true;
+				else {
+					lesson.isCompleted = true;
+					userLessons.push(lesson);
+				}
+				userLessons.sort((x) => x.order);
 				this.authService.rewriteCache(user);
 			})
 		);

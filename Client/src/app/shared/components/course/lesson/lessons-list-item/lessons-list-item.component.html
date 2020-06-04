@@ -1,1 +1,13 @@
-{{ lesson.text }}
+<div class="card">
+	<h3 class="card-header text-center">
+		{{ lesson?.title || "Title" }}
+	</h3>
+	<app-img *ngIf="lesson?.imageUrl" class="card-img" [src]="lesson.imageUrl"> </app-img>
+	<div class="card-body">
+		<p class="card-text">{{ lesson?.text }}</p>
+		<div class="row justify-content-between mx-0">
+			<button (click)="tryNavigateToLesson(prevLessonId)" *ngIf="prevLessonId" class="btn btn-outline-primary">Prev</button>
+			<button (click)="onNextClick()" class="btn btn-primary">{{ this.nextLessonId ? "Next" : "Finish" }}</button>
+		</div>
+	</div>
+</div>

@@ -1,26 +1,19 @@
 <div class="row justify-content-center">
-	<div class="nav flex-row flex-md-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+	<div class="flex-row flex-md-column mr-5">
 		<a
-			*ngFor="let lesson of lessons; index as i"
-			[attr.href]="'#v-pills-' + i"
-			[attr.id]="'v-pills-' + i + '-tab'"
-			[class]="'nav-link ' + (i == 0 ? 'active' : '')"
-			[attr.aria-controls]="'v-pills-' + i"
-			data-toggle="pill"
-			role="tab"
-			aria-selected="true"
+			*ngFor="let lesson of lessons"
+			(click)="navigateToLesson(lesson)"
+			[class]="'btn mb-2 ' + (selectedLesson?.id === lesson.id ? ' btn-primary ' : '') + (lesson.isCompleted ? ' btn-outline-primary ' : '')"
 			>{{ lesson.title }}</a
 		>
 	</div>
-	<div class="tab-content flex-grow-1" id="v-pills-tabContent">
-		<div
-			*ngFor="let lesson of lessons; index as i"
-			[class]="'tab-pane fade ' + (i == 0 ? 'show active' : '')"
-			[attr.id]="'v-pills-' + i"
-			[attr.aria-labelledby]="'v-pills-' + i + '-tab'"
-			role="tabpanel"
-		>
-			<app-lessons-list-item [lesson]="lesson"></app-lessons-list-item>
-		</div>
+	<div *ngIf="selectedLesson" class="flex-grow-1">
+		<app-lessons-list-item
+			[courseId]="courseId"
+			[lesson]="selectedLesson"
+			[prevLessonId]="prevLesson"
+			[nextLessonId]="nextLesson"
+			(completeLesson)="completeLesson($event)"
+		></app-lessons-list-item>
 	</div>
 </div>

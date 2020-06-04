@@ -34,7 +34,7 @@ namespace Diploma.Data.DAL.Seeders
 					Order = 2,
 					Title = "Lesson 2",
 					Text = "Course 1, Lesson 2",
-					ImageName = "3.png"
+					ImageName = "3.jpg"
 				},
 				new Lesson
 				{
@@ -162,7 +162,11 @@ namespace Diploma.Data.DAL.Seeders
 		private static void SeedCourseLessons(ModelBuilder builder)
 		{
 			builder.Entity<CourseLesson>().HasData(new List<CourseLesson>
-			{
+			{               new CourseLesson
+				{
+					CourseId = new Guid("00000000-0000-0000-0000-000000000001"),
+					LessonId = new Guid("00000000-0000-0000-0000-000000000001")
+				},
 				new CourseLesson
 				{
 					CourseId = new Guid("00000000-0000-0000-0000-000000000001"),

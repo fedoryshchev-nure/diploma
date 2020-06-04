@@ -23,7 +23,7 @@ namespace Diploma.Common.Mappings
 
 			CreateMap<Course, CourseDto>()
 				.ForMember(x => x.Lessons,
-					opt => opt.MapFrom(x => x.CourseLessons.Select(x => x.Lesson)))
+					opt => opt.MapFrom(x => x.CourseLessons.Select(x => x.Lesson).OrderBy(x => x.Order)))
 				.ReverseMap();
 			CreateMap<Lesson, LessonDto>()
 				.ReverseMap();
