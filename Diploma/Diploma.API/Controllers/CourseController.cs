@@ -57,6 +57,22 @@ namespace Diploma.API.Controllers
 			}
 		}
 
+		[HttpGet("[action]")]
+		public async Task<ActionResult<IEnumerable<CourseDto>>> Recommendations()
+		{
+			try
+			{
+				var entities = await unitOfWork.CourseRepository
+					.GetAsync(0, 3);
+				var courses = mapper.Map<IEnumerable<CourseDto>>(entities);
+				return Ok(courses);
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex);
+			}
+		}
+
 		public override async Task<ActionResult<CourseDto>> Get(Guid id)
 		{
 			try

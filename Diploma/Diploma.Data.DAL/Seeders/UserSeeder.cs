@@ -51,6 +51,51 @@ namespace Diploma.Data.DAL.Seeders
 							UserId = new Guid("00000000-0000-0000-0000-000000000002"),
 							CourseId = new Guid("00000000-0000-0000-0000-000000000002")
 						}
+					},
+					UserLessons = new List<UserLesson>
+					{
+						new UserLesson
+						{
+							UserId = new Guid("00000000-0000-0000-0000-000000000002"),
+							LessonId = new Guid("00000000-0000-0000-0000-000000000001"),
+							IsCompleted = true,
+							TimeSpent = TimeSpan.FromMinutes(150),
+						},
+						new UserLesson
+						{
+							UserId = new Guid("00000000-0000-0000-0000-000000000002"),
+							LessonId = new Guid("00000000-0000-0000-0000-000000000002"),
+							IsCompleted = true,
+							TimeSpent = TimeSpan.FromMinutes(35),
+						},
+						new UserLesson
+						{
+							UserId = new Guid("00000000-0000-0000-0000-000000000002"),
+							LessonId = new Guid("00000000-0000-0000-0000-000000000004"),
+							IsCompleted = true,
+							TimeSpent = TimeSpan.FromMinutes(75),
+						},
+						new UserLesson
+						{
+							UserId = new Guid("00000000-0000-0000-0000-000000000002"),
+							LessonId = new Guid("00000000-0000-0000-0000-000000000006"),
+							IsCompleted = true,
+							TimeSpent = TimeSpan.FromMinutes(15),
+						},
+						new UserLesson
+						{
+							UserId = new Guid("00000000-0000-0000-0000-000000000002"),
+							LessonId = new Guid("00000000-0000-0000-0000-000000000007"),
+							IsCompleted = true,
+							TimeSpent = TimeSpan.FromMinutes(64),
+						},
+						new UserLesson
+						{
+							UserId = new Guid("00000000-0000-0000-0000-000000000002"),
+							LessonId = new Guid("00000000-0000-0000-0000-000000000008"),
+							IsCompleted = true,
+							TimeSpent = TimeSpan.FromMinutes(45),
+						}
 					}
 				};
 				IdentityResult result = await userManager.CreateAsync(user, defaultPass);
@@ -73,7 +118,64 @@ namespace Diploma.Data.DAL.Seeders
 						{
 							UserId = new Guid("00000000-0000-0000-0000-000000000003"),
 							CourseId = new Guid("00000000-0000-0000-0000-000000000003")
+						},
+						new UserCourse
+						{
+							UserId = new Guid("00000000-0000-0000-0000-000000000003"),
+							CourseId = new Guid("00000000-0000-0000-0000-000000000005")
 						}
+					},
+					UserLessons = new List<UserLesson>
+					{
+						new UserLesson
+						{
+							UserId = new Guid("00000000-0000-0000-0000-000000000003"),
+							LessonId = new Guid("00000000-0000-0000-0000-000000000009"),
+							IsCompleted = true,
+							TimeSpent = TimeSpan.FromMinutes(15),
+						},
+						new UserLesson
+						{
+							UserId = new Guid("00000000-0000-0000-0000-000000000003"),
+							LessonId = new Guid("00000000-0000-0000-0000-000000000010"),
+							IsCompleted = true,
+							TimeSpent = TimeSpan.FromMinutes(86),
+						},
+						new UserLesson
+						{
+							UserId = new Guid("00000000-0000-0000-0000-000000000003"),
+							LessonId = new Guid("00000000-0000-0000-0000-000000000011"),
+							IsCompleted = true,
+							TimeSpent = TimeSpan.FromMinutes(4),
+						},
+						new UserLesson
+						{
+							UserId = new Guid("00000000-0000-0000-0000-000000000003"),
+							LessonId = new Guid("00000000-0000-0000-0000-000000000012"),
+							IsCompleted = true,
+							TimeSpent = TimeSpan.FromMinutes(5),
+						},
+						new UserLesson
+						{
+							UserId = new Guid("00000000-0000-0000-0000-000000000003"),
+							LessonId = new Guid("00000000-0000-0000-0000-000000000017"),
+							IsCompleted = true,
+							TimeSpent = TimeSpan.FromMinutes(76),
+						},
+						new UserLesson
+						{
+							UserId = new Guid("00000000-0000-0000-0000-000000000003"),
+							LessonId = new Guid("00000000-0000-0000-0000-000000000018"),
+							IsCompleted = true,
+							TimeSpent = TimeSpan.FromMinutes(12),
+						},
+						new UserLesson
+						{
+							UserId = new Guid("00000000-0000-0000-0000-000000000003"),
+							LessonId = new Guid("00000000-0000-0000-0000-000000000019"),
+							IsCompleted = true,
+							TimeSpent = TimeSpan.FromMinutes(15),
+						},
 					}
 				};
 				IdentityResult result = await userManager.CreateAsync(user, defaultPass);

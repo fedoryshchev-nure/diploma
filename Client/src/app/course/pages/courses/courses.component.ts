@@ -15,6 +15,7 @@ import { Filter } from "src/app/shared/helpers/defaults/filter";
 export class CoursesComponent implements OnInit, OnDestroy {
 	public courses$: Observable<Course[]>;
 	public total$: Observable<number>;
+	public recommendations$: Observable<Course[]>;
 
 	public filters = new BehaviorSubject(new Filter());
 
@@ -28,6 +29,9 @@ export class CoursesComponent implements OnInit, OnDestroy {
 			this.courses$ = tmp.pipe(map((x) => x.items.map((course) => Object.assign(new Course(), course)))); // Getter is not mapped unless you assign it intentioally
 			this.total$ = tmp.pipe(map((x) => x.total));
 		});
+		this.recommendations$ = this.courseService.getRecommendations().pipe(
+			map((x) => x.map((course) => Object.assign(new Course(), course))) // Getter is not mapped unless you assign it intentioally
+		);
 	}
 
 	ngOnDestroy() {

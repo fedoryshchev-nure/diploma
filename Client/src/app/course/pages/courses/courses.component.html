@@ -8,6 +8,6 @@
 		></app-courses-list>
 	</div>
 	<div class="col-lg-2 px-5 px-lg-0 mx-auto mb-5">
-		<app-recommendations-list [recommendations]="(courses$ | async) || []"></app-recommendations-list>
+		<app-recommendations-list [recommendations]="(recommendations$ | async) || []"></app-recommendations-list>
 	</div>
 </div>

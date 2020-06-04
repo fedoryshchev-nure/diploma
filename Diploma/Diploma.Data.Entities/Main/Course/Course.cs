@@ -15,7 +15,7 @@ namespace Diploma.Data.Entities.Main.Course
 		[Required]
 		[MaxLength(128)]
 		public string Title { get; set; }
-		[MaxLength(300)]
+		[MaxLength(1000)]
 		public string Description { get; set; }
 		public string ImageName { get; set; }
 
