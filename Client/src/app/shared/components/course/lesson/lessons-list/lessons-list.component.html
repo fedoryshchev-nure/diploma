@@ -1,5 +1,5 @@
 <div class="row justify-content-center">
-	<div class="flex-row flex-md-column mr-5">
+	<div class="col-md-3 d-flex flex-column mr-md-3 mb-5">
 		<a
 			*ngFor="let lesson of lessons"
 			(click)="navigateToLesson(lesson)"
@@ -7,7 +7,7 @@
 			>{{ lesson.title }}</a
 		>
 	</div>
-	<div *ngIf="selectedLesson" class="flex-grow-1">
+	<div *ngIf="selectedLesson" class="col-md-8">
 		<app-lessons-list-item
 			[courseId]="courseId"
 			[lesson]="selectedLesson"

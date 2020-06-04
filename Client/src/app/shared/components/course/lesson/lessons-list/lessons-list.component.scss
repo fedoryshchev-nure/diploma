@@ -1,3 +1,7 @@
 .flex-row {
 	display: inherit;
+
+	.btn {
+		word-break: break-word;
+	}
 }

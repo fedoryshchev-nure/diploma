@@ -95,12 +95,16 @@ namespace Diploma.API.Controllers
 
 				var courses = await query.FirstOrDefaultAsync(x => x.Id == id);
 				var dtos = mapper.Map<CourseDto>(courses);
-				var lessons = CurrentUser.UserLessons.ToDictionary(x => x.LessonId, x => x);
-				dtos.Lessons.ForEach(lesson =>
+
+				if (CurrentUser != null)
 				{
-					lesson.IsCompleted = lessons.ContainsKey(lesson.Id) && lessons[lesson.Id].IsCompleted;
+					var lessons = CurrentUser.UserLessons.ToDictionary(x => x.LessonId, x => x);
+						dtos.Lessons.ForEach(lesson =>
+						{
+							lesson.IsCompleted = lessons.ContainsKey(lesson.Id) && lessons[lesson.Id].IsCompleted;
+						}
+					);
 				}
-				);
 				return Ok(dtos);
 			}
 			catch (Exception ex)
