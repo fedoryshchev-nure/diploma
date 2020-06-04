@@ -34,7 +34,7 @@ namespace Diploma.API.Controllers
 			this.mapper = mapper;
 		}
 
-		[HttpGet]
+		//[HttpGet]
 		public virtual async Task<ActionResult<PagedDto<TDto>>> Get(
 			int page,
 			int? pageSize)

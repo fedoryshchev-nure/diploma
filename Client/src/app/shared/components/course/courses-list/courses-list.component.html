@@ -1,6 +1,18 @@
-<div class="row justify-content-around">
-	<div class="col-md-6 col-xl-4 p-5" *ngFor="let course of courses$ | async">
+<div class="input-group px-5 mb-5 mb-md-3">
+	<div class="input-group-prepend">
+		<span class="input-group-text material-icons">search</span>
+	</div>
+	<input type="text" class="form-control" placeholder="Username" (keyup)="filtersChanged.emit({ searchTerm: $event.target.value })" />
+</div>
+<div class="row justify-content-around m-0">
+	<div class="col-md-6 col-xl-4 px-5 pb-4 pb-md-3" *ngFor="let course of courses$ | async">
 		<app-courses-list-item [course]="course"></app-courses-list-item>
 	</div>
 </div>
-<mat-paginator [length]="total$ | async" [pageSize]="pageSize" [pageSizeOptions]="[12, 24, 36, 48]" (page)="pagingChanged.emit($event)"> </mat-paginator>
+<mat-paginator
+	[length]="total$ | async"
+	[pageSize]="pageSize"
+	[pageSizeOptions]="[12, 24, 36, 48]"
+	(page)="filtersChanged.emit({ page: $event.pageIndex, pageSize: $event.pageSize })"
+>
+</mat-paginator>

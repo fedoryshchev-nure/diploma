@@ -1,3 +1,13 @@
-<div class="container">
-	<app-courses-list [courses$]="courses$" [total$]="total$" [pageSize]="filters.getValue().pageSize" (pagingChanged)="updateFilters($event)"></app-courses-list>
+<div class="d-flex flex-column-reverse flex-lg-row">
+	<div class="col-lg-8 p-0 mb-5">
+		<app-courses-list
+			[courses$]="courses$"
+			[total$]="total$"
+			[pageSize]="filters.getValue().pageSize"
+			(filtersChanged)="updateFilters($event)"
+		></app-courses-list>
+	</div>
+	<div class="col-lg-2 px-5 px-lg-0 mx-auto mb-5">
+		<app-recommendations-list [recommendations]="(courses$ | async) || []"></app-recommendations-list>
+	</div>
 </div>

@@ -54,7 +54,6 @@ export class LessonsListComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	public completeLesson(lessonId: string) {
-		console.log("completing " + lessonId);
 		const lesson = this.lessons.find((x) => x.id === lessonId);
 		lesson.isCompleted = true;
 	}

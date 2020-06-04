@@ -12,6 +12,8 @@ import { CourseComponent } from "./components/course/course/course.component";
 import { CoursesListItemComponent } from "./components/course/courses-list-item/courses-list-item.component";
 import { LessonsListComponent } from "./components/course/lesson/lessons-list/lessons-list.component";
 import { LessonsListItemComponent } from "./components/course/lesson/lessons-list-item/lessons-list-item.component";
+import { RecommendationsListItemComponent } from "./components/recommendations/recommendations-list-item/recommendations-list-item.component";
+import { RecommendationsListComponent } from "./components/recommendations/recommendations-list/recommendations-list.component";
 
 @NgModule({
 	declarations: [
@@ -22,8 +24,10 @@ import { LessonsListItemComponent } from "./components/course/lesson/lessons-lis
 		LessonsListItemComponent,
 		ImageComponent,
 		ErrorsComponent,
+		RecommendationsListItemComponent,
+		RecommendationsListComponent,
 	],
 	imports: [CommonModule, RouterModule, MatPaginatorModule],
-	exports: [ImageComponent, ErrorsComponent, CoursesListComponent, CourseComponent, LessonsListComponent],
+	exports: [ImageComponent, ErrorsComponent, CoursesListComponent, CourseComponent, LessonsListComponent, RecommendationsListComponent],
 })
 export class SharedModule {}

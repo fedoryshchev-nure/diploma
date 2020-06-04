@@ -11,7 +11,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MoreLinq;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Diploma.API.Controllers
@@ -25,6 +28,33 @@ namespace Diploma.API.Controllers
 			IMapper mapper) : base(unitOfWork, mapper)
 		{
 			this.userManager = userManager;
+		}
+
+		[HttpGet]
+		public async Task<ActionResult<PagedDto<CourseDto>>> Get(
+			string searchTerm,
+			int page,
+			int? pageSize)
+		{
+			try
+			{
+				Expression<Func<Course, bool>> filters = x => 
+					!string.IsNullOrEmpty(searchTerm) 
+						? (x.Title.ToLower().Contains(searchTerm.ToLower())
+							|| x.Description.ToLower().Contains(searchTerm.ToLower())) 
+						: true;
+
+				var entities = await unitOfWork.CourseRepository
+					.GetAsync(page, pageSize, filters, disableTracking: true);
+				var items = mapper.Map<IEnumerable<CourseDto>>(entities);
+				var total = await unitOfWork.CourseRepository
+					.CountAsync(filters);
+				return Ok(new PagedDto<CourseDto>(items, total));
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex);
+			}
 		}
 
 		public override async Task<ActionResult<CourseDto>> Get(Guid id)
@@ -50,9 +80,10 @@ namespace Diploma.API.Controllers
 				var courses = await query.FirstOrDefaultAsync(x => x.Id == id);
 				var dtos = mapper.Map<CourseDto>(courses);
 				var lessons = CurrentUser.UserLessons.ToDictionary(x => x.LessonId, x => x);
-				dtos.Lessons.ForEach(lesson => {
+				dtos.Lessons.ForEach(lesson =>
+				{
 					lesson.IsCompleted = lessons.ContainsKey(lesson.Id) && lessons[lesson.Id].IsCompleted;
-					}
+				}
 				);
 				return Ok(dtos);
 			}

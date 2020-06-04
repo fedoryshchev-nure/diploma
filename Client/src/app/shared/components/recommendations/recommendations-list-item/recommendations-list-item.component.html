@@ -1,0 +1,6 @@
+<div [routerLink]="['/course', course.id]" class="card">
+	<h5 class="card-header text-center">
+		{{ course?.title || "Title" }}
+	</h5>
+	<app-img class="card-img" [src]="course?.imageUrl"></app-img>
+</div>

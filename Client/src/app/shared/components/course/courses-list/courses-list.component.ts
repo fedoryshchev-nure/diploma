@@ -13,9 +13,10 @@ export class CoursesListComponent implements OnInit {
 	@Input() total$: Observable<number>;
 	@Input() pageSize: number;
 
-	@Output() pagingChanged: EventEmitter<{
-		pageSize: number;
-		pageIndex: number;
+	@Output() filtersChanged: EventEmitter<{
+		searchTerm?: string;
+		page?: number;
+		pageSize?: number;
 	}> = new EventEmitter();
 
 	constructor() {}
