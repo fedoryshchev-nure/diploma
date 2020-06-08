@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Diploma.Common.DTOs;
 using Diploma.Common.DTOs.Auth;
+using Diploma.Common.DTOs.Course;
+using Diploma.Data.Entities.Linking;
 using Diploma.Data.Entities.Main.Course;
 using Diploma.Data.Entities.Main.User;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using System.Linq;
 
 namespace Diploma.Common.Mappings
@@ -24,7 +24,12 @@ namespace Diploma.Common.Mappings
 			CreateMap<Course, CourseDto>()
 				.ForMember(x => x.Lessons,
 					opt => opt.MapFrom(x => x.CourseLessons.Select(x => x.Lesson).OrderBy(x => x.Order)))
-				.ReverseMap();
+				.ReverseMap()
+				.ForMember(x => x.CourseLessons,
+					opt => opt.MapFrom(x => x.Lessons));
+			CreateMap<LessonDto, CourseLesson>()
+				.ForMember(x => x.Lesson,
+					ops => ops.MapFrom(x => x));
 			CreateMap<Lesson, LessonDto>()
 				.ReverseMap();
 		}

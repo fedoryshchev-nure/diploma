@@ -34,7 +34,6 @@ namespace Diploma.API.Controllers
 			this.mapper = mapper;
 		}
 
-		//[HttpGet]
 		public virtual async Task<ActionResult<PagedDto<TDto>>> Get(
 			int page,
 			int? pageSize)
@@ -78,6 +77,7 @@ namespace Diploma.API.Controllers
 				var entity = mapper.Map<TEntity>(dto);
 				await unitOfWork.GetRepository<TEntity>()
 					.CreateAsync(entity);
+				await unitOfWork.SaveChangesAsync();
 				var adedDto = mapper.Map<TDto>(entity);
 				return Created(Request.Path, adedDto);
 			}
@@ -101,6 +101,7 @@ namespace Diploma.API.Controllers
 
 				unitOfWork.GetRepository<TEntity>()
 					.Update(entity);
+				await unitOfWork.SaveChangesAsync();
 				var updateDto = mapper.Map<TDto>(entity);
 				return Ok(updateDto);
 			}
@@ -111,12 +112,13 @@ namespace Diploma.API.Controllers
 		}
 
 		[HttpDelete("{id:Guid}")]
-		public virtual ActionResult<TDto> Delete(Guid id)
+		public async virtual Task<ActionResult<TDto>> Delete(Guid id)
 		{
 			try
 			{
 				unitOfWork.GetRepository<TEntity>()
 					.Delete(id);
+				await unitOfWork.SaveChangesAsync();
 				return NoContent();
 			}
 			catch (Exception ex)
@@ -139,14 +141,8 @@ namespace Diploma.API.Controllers
 			return user;
 		}
 
-		protected async Task<string> SaveImageAsync(IFormFile file, string previousName = null)
+		protected async Task<string> SaveImageAsync(IFormFile file)
 		{
-			if (!string.IsNullOrEmpty(previousName))
-			{
-				var pathToDelete = GetImagePath(previousName);
-				System.IO.File.Delete(pathToDelete);
-			}
-
 			var fileName = $"{Guid.NewGuid()}-{file.FileName}";
 			var pathToSave = GetImagePath(fileName);
 
@@ -156,6 +152,15 @@ namespace Diploma.API.Controllers
 			}
 
 			return fileName;
+		}
+
+		protected void RemoveImage(string previousName)
+		{
+			if (!string.IsNullOrEmpty(previousName))
+			{
+				var pathToDelete = GetImagePath(previousName);
+				System.IO.File.Delete(pathToDelete);
+			}
 		}
 
 		private string GetImagePath(string fileName) =>

@@ -1,1 +1,7 @@
-<p>add-course works!</p>
+<div class="container">
+	<app-edit-course [default]="course" (formSubmitted)="onSubmit($event)" (remove)="onRemove()"> </app-edit-course>
+
+	<div *ngIf="errors$ | async as errors" class="col-md-4 offset-4">
+		<app-errors [messages]="errors"> </app-errors>
+	</div>
+</div>

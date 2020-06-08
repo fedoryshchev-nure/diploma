@@ -6,12 +6,16 @@ import { EditCourseComponent } from "./pages/edit-course/edit-course.component";
 
 const routes: Routes = [
 	{
-		path: "courses/add",
+		path: "course/add",
 		component: AddCourseComponent,
 	},
 	{
-		path: "courses/:courseId/edit",
+		path: "course/:courseId/edit",
 		component: EditCourseComponent,
+	},
+	{
+		path: "**",
+		redirectTo: "course/add",
 	},
 ];
 

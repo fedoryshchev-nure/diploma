@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
-using Diploma.Common.DTOs;
+using Diploma.Common.Constants;
+using Diploma.Common.DTOs.Course;
 using Diploma.Data.DAL.UnitOfWork;
 using Diploma.Data.Entities.Linking;
 using Diploma.Data.Entities.Main.Course;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,6 +22,7 @@ namespace Diploma.API.Controllers
 		}
 
 		[HttpGet("{id:Guid}/complete")]
+		[Authorize(Roles = Roles.User)]
 		public async Task<IActionResult> Complete(Guid id, bool isCompleted = true) 
 		{
 			try

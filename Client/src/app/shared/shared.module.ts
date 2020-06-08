@@ -1,7 +1,11 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatPaginatorModule } from "@angular/material/paginator";
+import { DragDropModule } from "@angular/cdk/drag-drop";
+
+import { NgxFileDropModule } from "ngx-file-drop";
 
 import { ErrorsComponent } from "./components/alerts/errors/errors.component";
 
@@ -14,6 +18,8 @@ import { LessonsListComponent } from "./components/course/lesson/lessons-list/le
 import { LessonsListItemComponent } from "./components/course/lesson/lessons-list-item/lessons-list-item.component";
 import { RecommendationsListItemComponent } from "./components/recommendations/recommendations-list-item/recommendations-list-item.component";
 import { RecommendationsListComponent } from "./components/recommendations/recommendations-list/recommendations-list.component";
+import { EditCourseComponent } from "./components/course/edit-course/edit-course.component";
+import { EditLessonComponent } from "./components/course/lesson/edit-lesson/edit-lesson.component";
 
 @NgModule({
 	declarations: [
@@ -26,8 +32,10 @@ import { RecommendationsListComponent } from "./components/recommendations/recom
 		ErrorsComponent,
 		RecommendationsListItemComponent,
 		RecommendationsListComponent,
+		EditCourseComponent,
+		EditLessonComponent,
 	],
-	imports: [CommonModule, RouterModule, MatPaginatorModule],
-	exports: [ImageComponent, ErrorsComponent, CoursesListComponent, CourseComponent, LessonsListComponent, RecommendationsListComponent],
+	imports: [CommonModule, RouterModule, MatPaginatorModule, DragDropModule, FormsModule, ReactiveFormsModule, NgxFileDropModule],
+	exports: [ImageComponent, ErrorsComponent, CoursesListComponent, CourseComponent, LessonsListComponent, RecommendationsListComponent, EditCourseComponent],
 })
 export class SharedModule {}

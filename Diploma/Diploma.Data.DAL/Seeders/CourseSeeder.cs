@@ -180,7 +180,7 @@ namespace Diploma.Data.DAL.Seeders
 				Id = new Guid("00000000-0000-0000-0000-000000000001"),
 				Title = "A Beginner's Guide to Neural Networks and Deep Learning",
 				Description = "Neural networks are a set of algorithms, modeled loosely after the human brain, that are designed to recognize patterns. They interpret sensory data through a kind of machine perception, labeling or clustering raw input. The patterns they recognize are numerical, contained in vectors, into which all real-world data, be it images, sound, text or time series, must be translated.",
-				ImageName = "index.jpg"
+				ImageName = "gettyimages-636079026-1024x1024.jpg"
 			});
 			builder.Entity<Course>().HasData(new Course
 			{

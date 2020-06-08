@@ -1,0 +1,62 @@
+<form [formGroup]="editCourseForm" #form="ngForm" (submit)="onSubmit($event)">
+	<button type="button" (click)="remove.emit(default.id)" class="btn btn-outline-danger d-flex ml-auto">
+		X
+	</button>
+
+	<div class="form-group">
+		<label>Title:</label>
+		<input type="text" class="form-control" formControlName="title" required />
+	</div>
+	<div class="alert alert-danger" *ngIf="form.submitted && editCourseForm.controls[title].errors">
+		<div *ngIf="editCourseForm.controls[title].errors.required">Title is required.</div>
+	</div>
+
+	<div class="form-group">
+		<label>Description:</label>
+		<textarea type="text" class="form-control" formControlName="description" required> </textarea>
+	</div>
+	<div class="alert alert-danger" *ngIf="form.submitted && editCourseForm.controls[description].errors">
+		<div *ngIf="editCourseForm.controls[description].errors.required">
+			Description is required.
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label>Image:</label>
+		<ngx-file-drop
+			dropZoneLabel="Drop files here"
+			(onFileDrop)="onFileChange($event)"
+			browseBtnLabel="Upload image"
+			dropZoneClassName="none"
+			contentClassName="form-control"
+		>
+			<ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+				<button type="button" (click)="openFileSelector()">Browse Files</button>
+				{{ editCourseForm.controls[image].value?.name || "Drop file" }}
+			</ng-template>
+		</ngx-file-drop>
+	</div>
+	<div class="alert alert-danger" *ngIf="form.submitted && editCourseForm.controls[image].errors">
+		<div *ngIf="editCourseForm.controls[image].errors.required">
+			Image is required.
+		</div>
+	</div>
+
+	<div cdkDropList formArrayName="lessons" (cdkDropListDropped)="drop($event)">
+		<div cdkDrag *ngFor="let lesson of lessonControls.controls; index as i">
+			<hr class="mt-0" />
+			<app-edit-lesson [form]="form" [editLessonFormGroup]="lesson" (remove)="removeLesson(i)"></app-edit-lesson>
+			<hr class="mt-0" *ngIf="lessonControls.value.length === i + 1" />
+		</div>
+	</div>
+
+	<div class="d-flex flex-row justify-content-between">
+		<button type="button" (click)="addLesson()" class="btn btn-outline-primary">
+			Add lesson
+		</button>
+		<button type="submit" class="btn btn-primary floatfloat-right">
+			Submit
+		</button>
+	</div>
+</form>
+<br />

@@ -1,0 +1,39 @@
+<div [formGroup]="editLessonFormGroup">
+	<div class="form-group">
+		<label>Title:</label>
+		<input type="text" class="form-control" formControlName="title" required />
+	</div>
+	<div class="alert alert-danger" *ngIf="form.submitted && editLessonFormGroup.controls[title].status === 'INVALID'">
+		<div *ngIf="editLessonFormGroup.controls[title].errors.required">Title is required.</div>
+	</div>
+
+	<div class="form-group">
+		<label>Text:</label>
+		<textarea type="text" class="form-control" formControlName="text" required> </textarea>
+	</div>
+	<div class="alert alert-danger" *ngIf="form.submitted && editLessonFormGroup.controls[text].status === 'INVALID'">
+		<div *ngIf="editLessonFormGroup.controls[text].errors.required">
+			Text is required.
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label>Image:</label>
+		<ngx-file-drop
+			dropZoneLabel="Drop files here"
+			(onFileDrop)="onFileChange($event)"
+			browseBtnLabel="Upload image"
+			dropZoneClassName="none"
+			contentClassName="form-control"
+		>
+			<ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+				<button type="button" (click)="openFileSelector()">Browse Files</button>
+				{{ editLessonFormGroup.controls[image].value?.name || "Drop file" }}
+			</ng-template>
+		</ngx-file-drop>
+	</div>
+</div>
+
+<button *ngIf="removable" type="button" (click)="remove.emit()" class="btn btn-outline-danger d-flex ml-auto">
+	X
+</button>

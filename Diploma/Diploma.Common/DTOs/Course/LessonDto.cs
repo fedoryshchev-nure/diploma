@@ -1,22 +1,19 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Diploma.Common.DTOs
+namespace Diploma.Common.DTOs.Course
 {
 	public class LessonDto
 	{
 		public Guid Id { get; set; }
 
-		[Required]
 		public int? Order { get; set; }
 
 		[Required]
 		[MaxLength(128)]
 		public string Title { get; set; }
-		[MaxLength(2000)]
+		[MaxLength(4000)]
 		public string Text { get; set; }
-		public IFormFile Image { get; set; }
 		public string ImageName { get; set; }
 		public bool IsCompleted { get; set; }
 	}

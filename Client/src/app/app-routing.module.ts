@@ -14,15 +14,18 @@ const routes: Routes = [
 	{
 		path: "course",
 		loadChildren: () => import("./course/course.module").then((m) => m.CourseModule),
+		runGuardsAndResolvers: "always",
 	},
 	{
 		path: "account",
 		loadChildren: () => import("./account/account.module").then((m) => m.AccountModule),
+		runGuardsAndResolvers: "always",
 		canActivate: [AuthGuard],
 	},
 	{
 		path: "admin",
 		loadChildren: () => import("./admin/admin.module").then((m) => m.AdminModule),
+		runGuardsAndResolvers: "always",
 		canActivate: [AuthGuard, AdminGuard],
 	},
 	{

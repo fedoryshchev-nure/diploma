@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { Router } from "@angular/router";
+import { JwtHelperService } from "@auth0/angular-jwt";
 import { Observable, BehaviorSubject } from "rxjs";
 import { tap } from "rxjs/operators";
-import { JwtHelperService } from "@auth0/angular-jwt";
 
 import { environment } from "src/environments/environment";
 
@@ -19,7 +20,7 @@ export class AuthService {
 	private currentUserSubject: BehaviorSubject<User>;
 	public currentUser: Observable<User>;
 
-	constructor(private http: HttpClient) {
+	constructor(private http: HttpClient, private router: Router) {
 		let user = JSON.parse(localStorage.getItem(currentUser));
 
 		if (!user || !user.token) {
@@ -53,5 +54,6 @@ export class AuthService {
 	public logout() {
 		localStorage.removeItem("currentUser");
 		this.currentUserSubject.next(null);
+		this.router.navigate(["/auth/login"]);
 	}
 }

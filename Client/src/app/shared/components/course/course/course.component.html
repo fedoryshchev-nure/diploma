@@ -5,20 +5,27 @@
 	<app-img class="card-img" src="{{ course?.imageUrl }}"> </app-img>
 	<div class="card-body">
 		<p class="card-text">{{ course?.description }}</p>
-		<button *ngIf="userService.isAttendingCourse(course?.id) | async; else attend" [routerLink]="['/course', this.course.id, 'lesson']" class="btn btn-primary">
-			Go to lessons
-		</button>
-		<ng-template #attend>
-			<button
-				[disabled]="!(userService.user$ | async) || !course"
-				(click)="attendCourse()"
-				class="btn btn-primary"
-				data-toggle="tooltip"
-				data-placement="top"
-				title="Authorize first"
-			>
-				Attend
-			</button>
+		<div *ngIf="userService.isAdmin(); else notAdmin">
+			<a [routerLink]="['/admin', 'course', this.course.id, 'edit']" class="btn btn-primary">
+				Edit
+			</a>
+		</div>
+		<ng-template #notAdmin>
+			<a *ngIf="userService.isAttendingCourse(course?.id) | async; else attend" [routerLink]="['/course', this.course.id, 'lesson']" class="btn btn-primary">
+				Go to lessons
+			</a>
+			<ng-template #attend>
+				<button
+					[disabled]="!(userService.user$ | async) || !course"
+					(click)="attendCourse()"
+					class="btn btn-primary"
+					data-toggle="tooltip"
+					data-placement="top"
+					title="Authorize first"
+				>
+					Attend
+				</button>
+			</ng-template>
 		</ng-template>
 	</div>
 </div>

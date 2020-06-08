@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Diploma.Common.DTOs.Course;
+using System.Collections.Generic;
 
 namespace Diploma.Common.DTOs
 {

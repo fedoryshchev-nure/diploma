@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Diploma.Common.Constants;
 using Diploma.Common.DTOs;
+using Diploma.Common.DTOs.Course;
 using Diploma.Data.DAL.UnitOfWork;
 using Diploma.Data.Entities.Linking;
 using Diploma.Data.Entities.Main.Course;
 using Diploma.Data.Entities.Main.User;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -93,19 +95,20 @@ namespace Diploma.API.Controllers
 						.ThenInclude(x => x.Lesson);
 				}
 
-				var courses = await query.FirstOrDefaultAsync(x => x.Id == id);
-				var dtos = mapper.Map<CourseDto>(courses);
+				var course = await query.FirstOrDefaultAsync(x => x.Id == id);
+				if (course == null) return NotFound();
+
+				var dto = mapper.Map<CourseDto>(course);
 
 				if (CurrentUser != null)
 				{
 					var lessons = CurrentUser.UserLessons.ToDictionary(x => x.LessonId, x => x);
-						dtos.Lessons.ForEach(lesson =>
-						{
-							lesson.IsCompleted = lessons.ContainsKey(lesson.Id) && lessons[lesson.Id].IsCompleted;
-						}
-					);
+					dto?.Lessons?.ForEach(lesson =>
+					{
+						lesson.IsCompleted = lessons.ContainsKey(lesson.Id) && lessons[lesson.Id].IsCompleted;
+					});
 				}
-				return Ok(dtos);
+				return Ok(dto);
 			}
 			catch (Exception ex)
 			{
@@ -143,9 +146,13 @@ namespace Diploma.API.Controllers
 			try
 			{
 				var entity = mapper.Map<Course>(dto);
-				entity.ImageName = await SaveImageAsync(dto.Image);
+
+				var map = await SaveImagesAsync(dto);
+				SetImageAndOrder(entity, dto, map);
+
 				await unitOfWork.GetRepository<Course>()
 					.CreateAsync(entity);
+				await unitOfWork.SaveChangesAsync();
 				var adedDto = mapper.Map<CourseDto>(entity);
 				return Created(Request.Path, adedDto);
 			}
@@ -156,20 +163,26 @@ namespace Diploma.API.Controllers
 		}
 
 		[Authorize(Roles = Roles.Admin)]
-		public override async Task<ActionResult<CourseDto>> Update(Guid id, CourseDto dto)
+		public override async Task<ActionResult<CourseDto>> Update(Guid id, [FromForm]CourseDto dto)
 		{
 			try
 			{
-				var existingEntity = await unitOfWork.GetRepository<Course>()
-					.GetAsync(id, true);
-				if (existingEntity == null) return NotFound();
+				var entity = await unitOfWork
+					.Query<Course>()
+					.Include(x => x.CourseLessons)
+						.ThenInclude(x => x.Lesson)
+					.FirstOrDefaultAsync(x => x.Id == id);
+				if (entity == null) return NotFound();
 
-				var entity = mapper.Map<Course>(dto);
+				var map = await SaveImagesAsync(dto);
+				RemoveOldImages(entity, dto, map);
+				entity = mapper.Map(dto, entity);
 				entity.Id = id;
-				entity.ImageName = await SaveImageAsync(dto.Image, existingEntity.ImageName);
+				SetImageAndOrder(entity, dto, map);
 
 				unitOfWork.GetRepository<Course>()
 					.Update(entity);
+				await unitOfWork.SaveChangesAsync();
 				var updateDto = mapper.Map<CourseDto>(entity);
 				return Ok(updateDto);
 			}
@@ -180,9 +193,63 @@ namespace Diploma.API.Controllers
 		}
 
 		[Authorize(Roles = Roles.Admin)]
-		public override ActionResult<CourseDto> Delete(Guid id)
+		public override async Task<ActionResult<CourseDto>> Delete(Guid id)
 		{
-			return base.Delete(id);
+			return await base.Delete(id);
+		}
+
+		private async Task<Dictionary<string, string>> SaveImagesAsync(CourseDto dto)
+		{
+			var savedImages = dto.Images.Select(x => x.FileName)
+				.Distinct()
+				.ToDictionary(fn => fn, v => "");
+			foreach (var image in dto.Images)
+			{
+				try // In case if any save fails don't break course creation
+				{
+					savedImages[image.FileName] = await SaveImageAsync(image);
+				}
+				catch { }
+			}
+
+			return savedImages;
+		}
+
+		private void RemoveOldImages(Course entity, CourseDto dto, Dictionary<string, string> savedImages)
+		{
+			TryRemoveImage(entity.ImageName, savedImages.ContainsKey(dto.ImageName ?? ""));
+			for (int order = 0; order < entity.CourseLessons.Count; ++order)
+			{
+				var enityLesson = entity.CourseLessons.ElementAt(order).Lesson;
+				var dtoLesson = dto.Lessons.ElementAt(order);
+
+				TryRemoveImage(enityLesson.ImageName, savedImages.ContainsKey(dtoLesson.ImageName ?? ""));
+			}
+		}
+	
+		private void SetImageAndOrder(Course entity, CourseDto dto, Dictionary<string, string> savedImages)
+		{
+			entity.ImageName = savedImages.GetValueOrDefault(dto.ImageName ?? "", entity.ImageName);
+			for (int order = 0; order < entity.CourseLessons.Count; ++order)
+			{
+				var enityLesson = entity.CourseLessons.ElementAt(order).Lesson;
+				var dtoLesson = dto.Lessons.ElementAt(order);
+
+				enityLesson.ImageName = savedImages.GetValueOrDefault(dtoLesson.ImageName ?? "", enityLesson.ImageName);
+				enityLesson.Order = order;
+			}
+		}
+
+		private void TryRemoveImage(string currentImageName, bool newImageExists)
+		{
+			if (!string.IsNullOrEmpty(currentImageName) && newImageExists)
+			{
+				try
+				{
+					RemoveImage(currentImageName);
+				}
+				catch { }
+			}
 		}
 	}
 }

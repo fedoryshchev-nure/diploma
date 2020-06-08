@@ -1,8 +1,11 @@
+import { IModel } from "../imodel";
 import { Lesson } from "./lesson";
-import { environment } from "src/environments/environment";
+
 import { Placeholders } from "../../helpers/defaults/placeholders";
 
-export class Course {
+import { environment } from "src/environments/environment";
+
+export class Course implements IModel {
 	constructor(
 		public id: string = "",
 		public title: string = "",

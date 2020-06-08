@@ -1,6 +1,8 @@
+import { IModel } from "../imodel";
+
 import { environment } from "src/environments/environment";
 
-export class Lesson {
+export class Lesson implements IModel {
 	constructor(
 		public id: string = "",
 		public title: string = "",
