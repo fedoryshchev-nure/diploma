@@ -36,10 +36,11 @@ export class EditCourseComponent implements OnInit, OnChanges {
 
 	ngOnChanges() {
 		if (this.default) {
+			let defaultImage = { name: this.default.imageName };
 			this.editCourseForm = this.fb.group({
 				title: [this.default.title, [Validators.required]],
 				description: [this.default.description, [Validators.required]],
-				image: [{ name: this.default.imageName.substr(37) }, [Validators.required]],
+				image: [defaultImage, [Validators.required]],
 				lessons: this.fb.array([]),
 			});
 			this.default.lessons.forEach((lesson) => {

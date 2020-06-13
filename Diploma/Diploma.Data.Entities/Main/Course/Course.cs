@@ -19,6 +19,8 @@ namespace Diploma.Data.Entities.Main.Course
 		public string Description { get; set; }
 		public string ImageName { get; set; }
 
+		public bool IsInUseByRecommendationModule { get; set; }
+
 		public ICollection<UserCourse> UserCourses { get; set; }
 		public ICollection<CourseLesson> CourseLessons { get; set; }
 	}

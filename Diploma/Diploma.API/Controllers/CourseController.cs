@@ -7,16 +7,17 @@ using Diploma.Data.Entities.Linking;
 using Diploma.Data.Entities.Main.Course;
 using Diploma.Data.Entities.Main.User;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MoreLinq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Diploma.API.Controllers
@@ -64,10 +65,28 @@ namespace Diploma.API.Controllers
 		{
 			try
 			{
-				var entities = await unitOfWork.CourseRepository
-					.GetAsync(0, 3);
+				Guid? courseId = CurrentUser?.UserCourses
+					.Where(x => x.Course.IsInUseByRecommendationModule)
+					?.Select(x => x.CourseId)
+					?.OrderBy(x => Guid.NewGuid())
+					?.FirstOrDefault();
+
+				courseId ??= await unitOfWork.Query<Course>()
+					.Where(x => x.IsInUseByRecommendationModule)
+					.Select(x => x.Id)
+					.OrderBy(x => Guid.NewGuid())
+					.FirstAsync();
+
+				using var httpClient = new HttpClient();
+				var data = await httpClient.GetStringAsync($"http://localhost:9090/recommendations/{courseId}");
+				var recommendations = JsonConvert.DeserializeObject<List<RecommendationDto>>(data);
+
+				var entities = await unitOfWork.Query<Course>()
+					.Where(x => recommendations.Select(y => y.CourseId).Any(y => y == x.Id))
+					.ToListAsync();
 				var courses = mapper.Map<IEnumerable<CourseDto>>(entities);
 				return Ok(courses);
+
 			}
 			catch (Exception ex)
 			{

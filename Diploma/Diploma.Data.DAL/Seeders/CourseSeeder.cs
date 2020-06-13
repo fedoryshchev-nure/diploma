@@ -180,35 +180,40 @@ namespace Diploma.Data.DAL.Seeders
 				Id = new Guid("00000000-0000-0000-0000-000000000001"),
 				Title = "A Beginner's Guide to Neural Networks and Deep Learning",
 				Description = "Neural networks are a set of algorithms, modeled loosely after the human brain, that are designed to recognize patterns. They interpret sensory data through a kind of machine perception, labeling or clustering raw input. The patterns they recognize are numerical, contained in vectors, into which all real-world data, be it images, sound, text or time series, must be translated.",
-				ImageName = "gettyimages-636079026-1024x1024.jpg"
+				ImageName = "gettyimages-636079026-1024x1024.jpg",
+				IsInUseByRecommendationModule = true
 			});
 			builder.Entity<Course>().HasData(new Course
 			{
 				Id = new Guid("00000000-0000-0000-0000-000000000002"),
 				Title = "Artificial neural network",
 				Description = "Artificial neural networks (ANN) or connectionist systems are computing systems vaguely inspired by the biological neural networks that constitute animal brains. Such systems learn to perform tasks by considering examples, generally without being programmed with task-specific rules. For example, in image recognition, they might learn to identify images that contain cats by analyzing example images that have been manually labeled as cat or no cat and using the results to identify cats in other images. They do this without any prior knowledge of cats, for example, that they have fur, tails, whiskers and cat-like faces. Instead, they automatically generate identifying characteristics from the examples that they process. ",
-				ImageName = "2.png"
+				ImageName = "2.png",
+				IsInUseByRecommendationModule = true
 			});
 			builder.Entity<Course>().HasData(new Course
 			{
 				Id = new Guid("00000000-0000-0000-0000-000000000003"),
 				Title = "Algorithms",
 				Description = "In mathematics and computer science, an algorithm is a finite sequence of well-defined, computer-implementable instructions, typically to solve a class of problems or to perform a computation Algorithms are always unambiguous and are used as specifications for performing calculations, data processing, automated reasoning, and other tasks. ",
-				ImageName = "Screen-Shot-2019-09-05-at-11.00.46-AM-1024x766.png"
+				ImageName = "Screen-Shot-2019-09-05-at-11.00.46-AM-1024x766.png",
+				IsInUseByRecommendationModule = true
 			});
 			builder.Entity<Course>().HasData(new Course
 			{
 				Id = new Guid("00000000-0000-0000-0000-000000000004"),
 				Title = "Python",
 				Description = "Learn Python",
-				ImageName = "1200px-Python-logo-notext.svg.png"
+				ImageName = "1200px-Python-logo-notext.svg.png",
+				IsInUseByRecommendationModule = true
 			});
 			builder.Entity<Course>().HasData(new Course
 			{
 				Id = new Guid("00000000-0000-0000-0000-000000000005"),
 				Title = ".NET Framework",
 				Description = "Course 3 Description",
-				ImageName = "c-sharp-dot-net.png"
+				ImageName = "c-sharp-dot-net.png",
+				IsInUseByRecommendationModule = true
 			});
 		}
 

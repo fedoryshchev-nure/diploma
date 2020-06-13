@@ -22,7 +22,6 @@ namespace Diploma.Common.DTOs.Course
 		public string Description { get; set; }
 		public string ImageName { get; set; }
 
-		[MinLength(1)]
 		// Required for add/edit to treat nested files
 		public IEnumerable<IFormFile> Images { get; set; }
 
